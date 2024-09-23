@@ -1,0 +1,151 @@
+/* styles.scss */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$primaryColor: #FEFDFD;
+$greenColor: #03C490;
+$azureBlue: #6595F3;
+$white: #FFFFFF;
+$black: #000000;
+
+@mixin button ($color, $border, $bgColor, $colorHover, $bgColorHover, $borderHover){
+    color: $color;
+    border: $border;
+    background-color: $bgColor;
+    transition: all 0.3s ease;
+    &:hover {
+        color: $colorHover;
+        background-color: $bgColorHover;
+        border: $borderHover;
+    }
+}
+
+header{
+    background-color: $greenColor;
+}
+
+.btnLogin {
+    @include button($white, 2px solid $azureBlue, $azureBlue, $white, $greenColor, 2px solid $greenColor);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+.btnRegister {
+    @include button($black, 1px solid $black, $white, $white, $greenColor, 1px solid $greenColor);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+footer {
+    background: rgb(3,196,144);
+    background: linear-gradient(0deg, rgba(3,196,144,1) 0%, rgba(3,196,144,0.75) 35%, rgba(3,196,144,0.45) 67%, rgba(3,196,144,0) 100%);
+    div{
+        div{
+            ul{
+                li{
+                    a{
+                        @apply text-gray-700;
+                        transition: all 0.2s ease;
+                        &:hover{
+                            @apply text-white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+main {
+    #section1 {
+        position: relative;
+        div{
+            background-image: url('../src/assets/img/section1Bg.webp');
+            #btnFree{
+                @include button($white, 2px solid $azureBlue, $azureBlue, $white, $greenColor, 2px solid $greenColor);
+                padding: 10px 20px;
+                border-radius: 5px;
+                z-index: 2;
+                margin: auto auto 40px;
+                z-index: 2;
+            }
+            div{
+                position: absolute;
+                top: 30%;
+                left: 30%;
+                h1{
+                    font-size: 48px;
+                    line-height: 70px;
+                }
+                span{
+                    background-color: rgba(245, 245, 220, 0.25);
+                }
+                
+            }
+        }
+        &::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(3,196,144,0.5);background: rgb(3,196,144);
+            background: linear-gradient(180deg, rgba(3,196,144,1) 0%, rgba(3,196,144,0.75) 20%, rgba(3,196,144,0.55) 60%, rgba(3,196,144,0) 100%);
+            z-index: 1; 
+        }
+    }
+
+    #services {
+        article{
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            @apply bg-slate-200 rounded;
+            h3{
+                font-size: 20px;
+                font-weight: bold;
+            }
+            p{
+                @apply text-gray-500
+            }
+        }
+    }
+
+    #pret{
+        background-color: $greenColor;
+        padding: 50px;
+        height: fit-content;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 120px;
+        margin-bottom: 75px;
+
+        h2{
+            color: $white;
+            font-size: 42px;
+        }
+        a{
+            @include button($white, 2px solid $azureBlue, $azureBlue, $white, $greenColor, 2px solid $greenColor);
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: auto;
+        }
+    }
+    #video{
+        text-align: center;
+        margin-bottom: 75px;
+        div{
+            h2{
+                font-size: 42px;
+                margin-bottom: 50px;
+            }
+            iframe{
+                width: 100%;
+                height: 500px;
+            }
+        }
+    }
+}
