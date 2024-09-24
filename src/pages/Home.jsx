@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
+import Footer from '../components/footer/Footer';
+import Header from '../components/header/Header';
 import contactHome from '../assets/img/contactHome.webp';
 import '../main.scss';
-import { ChartPie, ChartPieIcon, ListTodo, LockKeyhole, UsersRound } from 'lucide-react';
+import { ChartPieIcon, ListTodo, LockKeyhole, UsersRound } from 'lucide-react';
+import Contact from '../components/contact/Contact';
 
 export default function Home() {
 return (
@@ -11,8 +12,8 @@ return (
     <Header />
     <main>
         <section id='section1' className='mb-20'>
-            <div className="max-w-4xl m-auto flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 h-screen bg-cover bg-center">
-                <div className="z-10 text-white flex flex-col gap-2">
+            <div className="max-w-4xl m-auto flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 h-screen">
+                <div className="z-10 text-white">
                     <h1>Vivre ensemble,<br/> <span>C'est simple avec Colocasmart.</span></h1>
                     <p>Simplifiez votre vie en colocation grâce à nos outils de gestion quotidiens et financiers.</p>
                 </div>
@@ -57,9 +58,17 @@ return (
         </section>
         {/* SECTION 4 */}
         <section id="video">
-            <div class="max-w-7xl m-auto ">
+            <div className="w-auto px-2 m-auto lg:max-w-7xl ">
                 <h2>ColocaSmart : Votre Solution en Vidéo</h2>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/3HOGZvMsN2c?si=JjzrfPELZqg2eCMm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/3HOGZvMsN2c?si=JjzrfPELZqg2eCMm" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+            </div>
+        </section>
+        <section id="contact">
+            <h2 className='text-center text-4xl lg:text-5xl lg:px-2 font-bold mb-10'>Contactez-nous</h2>
+            <div>
+                <Contact />
+                <img src={contactHome} alt="contact" />
+
             </div>
         </section>
     </main>

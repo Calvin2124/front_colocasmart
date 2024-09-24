@@ -1,0 +1,62 @@
+$primaryColor: #FEFDFD;
+$greenColor: #03C490;
+$azureBlue: #6595F3;
+$white: #FFFFFF;
+$black: #000000;
+$darkGrey: #454545;
+$mediumGrey: #757575;
+$veryLightGrey: #F0F0F0;
+$primaryColor: #FEFDFD;
+$veryLightGrey2: #F5F5F5;
+$mediumGrey2: #808181;
+
+main{
+    background-color: #fefdfd;
+}
+
+@mixin button ($color, $border, $bgColor, $colorHover, $bgColorHover, $borderHover){
+    color: $color;
+    border: $border;
+    background-color: $bgColor;
+    transition: all 0.3s ease;
+    &:hover {
+        color: $colorHover;
+        background-color: $bgColorHover;
+        border: $borderHover;
+    }
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    gap: 20px;
+    input, textarea{
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid transparent;
+        border-bottom: 2px solid $mediumGrey;
+        background-color: $veryLightGrey2;
+        outline: none;
+        resize: none;
+    }
+    #rgpd{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        input{
+            width: 20px;
+            height: 20px;
+        }
+        label{
+            font-size: 15px;
+        }
+    }
+    button{
+        @include button($white, 2px solid $azureBlue, $azureBlue , $white, $greenColor, 2px solid $greenColor);
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }   
+}

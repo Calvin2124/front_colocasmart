@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
-import  logoBlack  from "../assets/img/logoBlack.webp";
+import  logoBlack  from "../../assets/img/logoBlack.webp";
+import '../header/header.scss';
 
 export default function Footer(){
     return (
         <>
             <footer>
                 <div className="max-w-7xl mx-auto flex flex-col py-10 gap-8 px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-around items-center">
+                    <div className="flex flex-col sm:flex-row justify-around items-center">
                         <Link to="/"><img src={logoBlack} alt="logo" className="h-32 w-32" /></Link>
-                        <div id="listUl" className="flex gap-10">
+                        <div id="listUl" className="flex flex-col lg:flex-row gap-10">
                             <ul className="leading-10">
                                 <li className="text-xl">Navigation</li>
                                 <li><Link href="#">À propos de nous</Link></li>
