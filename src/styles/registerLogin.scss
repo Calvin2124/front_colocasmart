@@ -1,0 +1,53 @@
+$primaryColor: #FEFDFD;
+$greenColor: #03C490;
+$azureBlue: #6595F3;
+$white: #FFFFFF;
+$black: #000000;
+$darkGrey: #454545;
+$mediumGrey: #757575;
+$veryLightGrey: #F0F0F0;
+$primaryColor: #FEFDFD;
+$veryLightGrey2: #F5F5F5;
+$mediumGrey2: #808181;
+
+.headerRegisterLogin{
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.formRegisterLogin{
+    background-image: url('../assets/img/bgRegisterLogin.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: max-content;
+    &::before{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: $greenColor;
+        opacity: 0.8;
+        z-index: 0;
+    }
+    .divForm{
+        position: relative;
+        background-color: $primaryColor;
+        border-radius: 8px;
+        z-index: 1;
+        img{
+            max-height: 650px;
+            width: 100%;
+        }
+    }
+}
+
+.btnClose{
+    margin: 0 0 auto auto;
+}

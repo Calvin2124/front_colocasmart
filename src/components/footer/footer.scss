@@ -1,0 +1,19 @@
+#footerGreen {
+    background: rgb(3,196,144);
+    background: linear-gradient(0deg, rgba(3,196,144,1) 0%, rgba(3,196,144,0.75) 35%, rgba(3,196,144,0.45) 67%, rgba(3,196,144,0) 100%);
+    div{
+        div{
+            ul{
+                li{
+                    a{
+                        @apply text-gray-700;
+                        transition: all 0.2s ease;
+                        &:hover{
+                            @apply text-white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import  logoBlack  from "../../assets/img/logoBlack.webp";
-import '../footer/footer.scss';
+import '../footerWhite/footer.scss';
 
 export default function Footer(){
     return (
         <>
-            <footer id="footerGreen">
+            <footer id="footerWhite">
                 <div className="max-w-7xl mx-auto flex flex-col py-10 gap-8 px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col sm:flex-row justify-around items-center">
                         <Link to="/"><img src={logoBlack} alt="logo" className="h-32 w-32" /></Link>

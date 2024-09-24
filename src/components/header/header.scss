@@ -1,3 +1,5 @@
+$greenColor: #03C490;
+
 #menu-mobile{
     align-items: center;
     padding: 30px;
@@ -8,5 +10,8 @@
         justify-content: space-between;
         align-items: center;
     }
+}
 
+#headerNonConnect{
+    background-color: $greenColor;
 }

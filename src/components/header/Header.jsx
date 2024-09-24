@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import logoGreen from '../../assets/img/ColocaSmartGreen.webp';
+import '../header/header.scss';
 
 export default function Header() {
 const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 return (
     <>
-    <header>
+    <header id="headerNonConnect">
         <div className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link to="/">
             <img src={logoGreen} alt="logo" className="h-20 w-20 sm:h-32 sm:w-32" />
@@ -21,7 +22,7 @@ return (
             <li><Link to="">A propos</Link></li>
             <li><Link to="">Contact</Link></li>
             <li><Link className="btnLogin" to="/">Se connecter</Link></li>
-            <li><Link className="btnRegister" to="/">S'inscrire</Link></li>
+            <li><Link className="btnRegister" to="/register">S'inscrire</Link></li>
             </ul>
         </nav>
 
@@ -40,7 +41,7 @@ return (
             <li><Link to="" onClick={() => setIsMenuOpen(false)}>A propos</Link></li>
             <li><Link to="" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
             <li><Link className="btnLogin" to="/" onClick={() => setIsMenuOpen(false)}>Se connecter</Link></li>
-            <li><Link className="btnRegister" to="/" onClick={() => setIsMenuOpen(false)}>S'inscrire</Link></li>
+            <li><Link className="btnRegister" to="/register" onClick={() => setIsMenuOpen(false)}>S'inscrire</Link></li>
             </ul>
         </div>
         )}
