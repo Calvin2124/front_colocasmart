@@ -1,4 +1,4 @@
-import { Link } from "react-scroll";
+import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import logoGreen from '../../assets/img/ColocaSmartGreen.webp';
@@ -20,9 +20,9 @@ return (
             <ul className="flex gap-3">
             <li><Link className="cursor-pointer" to="/">Accueil</Link></li>
             <li><Link className="cursor-pointer" to="">A propos</Link></li>
-            <li><Link className="cursor-pointer" to="contact" smooth={true} duration={500}>Contact</Link></li>
-            <li><Link className="btnLogin" to="/login">Se connecter</Link></li>
-            <li><Link className="btnRegister" to="/register">S'inscrire</Link></li>
+            <li><Link className="cursor-pointer" to="/">Contact</Link></li>
+            <li><Link className="btnLogin cursor-pointer" to="/login">Se connecter</Link></li>
+            <li><Link className="btnRegister cursor-pointer" to="/register">S'inscrire</Link></li>
             </ul>
         </nav>
 
@@ -39,7 +39,7 @@ return (
             <ul id="list-hidden">
             <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Accueil</Link></li>
             <li><Link to="" onClick={() => setIsMenuOpen(false)}>A propos</Link></li>
-            <li><Link to="contact" smooth={true} duration={500} onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
+            <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
             <li><Link className="btnLogin" to="/login" onClick={() => setIsMenuOpen(false)}>Se connecter</Link></li>
             <li><Link className="btnRegister" to="/register" onClick={() => setIsMenuOpen(false)}>S'inscrire</Link></li>
             </ul>

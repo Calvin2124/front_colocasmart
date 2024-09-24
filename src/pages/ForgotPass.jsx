@@ -4,11 +4,10 @@ import Footer from '../components/footerWhite/Footer';
 import '../styles/registerLogin.scss';
 import { X } from 'lucide-react';
 import { useState } from 'react';
-import loginImg from '../assets/img/login.webp'
+import forgotImg from '../assets/img/forgotPass.webp'
 
 export default function Register() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,8 +26,9 @@ export default function Register() {
                         </Link>
                         <div className='grid grid-cols-1 gap-4 items-center lg:grid-cols-2'>
                             <div className='flex flex-col items-center gap-4'>
-                                <h2 className='text-4xl'>Se connecter</h2>
+                                <h2 className='text-4xl'>Mot de passe oublié ?</h2>
                                 <form action="#" onSubmit={handleSubmit}>
+                                    <p>Vous avez oublié votre mot de passe ? Pas de souci ! Entrez votre adresse e-mail ci-dessous et nous vous enverrons un lien pour réinitialiser votre mot de passe.</p>
                                     <input 
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
@@ -37,30 +37,15 @@ export default function Register() {
                                         name="email" 
                                         placeholder="Email" 
                                         required/>
-                                    <input 
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        type="password" 
-                                        id="password" 
-                                        name="password" 
-                                        placeholder="Password" 
-                                        required/>
-                                    <Link className='text-blue-500' to="/forgot">Mot de passe oublié ?</Link>
-                                    <p>Vous n'avez pas de compte ? <Link className='text-blue-500' to="/register">S'inscrire</Link></p>
-                                    <div>
-                                        <input type="checkbox" id="souvenir" name="souvenir" required/>
-                                        <label htmlFor="souvenir">Se souvenir de moi</label>
-                                    </div>
-                                    <button className="btnBlue">Log in</button>
+                                    <button className="btnBlue m-auto">Envoyer</button>
                                 </form>
                             </div>
                             
-                            <img src={loginImg} alt="login" />
+                            <img src={forgotImg} alt="forgot" />
                         </div>
                     </div>
                 </section>
             </main>
-        
             <Footer />
         </>
     )

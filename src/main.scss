@@ -39,6 +39,8 @@ main {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
+        height: max-content;
+        padding-bottom: 90px;
         div{
             #btnFree{
                 @include button($white, 2px solid $azureBlue, $azureBlue, $black, transparent, 2px solid $azureBlue);
