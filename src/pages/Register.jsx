@@ -67,7 +67,7 @@ export default function Register() {
                                     name="confirmPassword" 
                                     placeholder="Confirm password" 
                                     required/>
-                                <p>You already have an account? <Link className='text-blue-500' to="login.html">Login</Link></p>
+                                <p>You already have an account? <Link className='text-blue-500' to="/login">Login</Link></p>
                                 <div>
                                     <input type="checkbox" id="rgpd" name="rgpd" required/>
                                     <label htmlFor="rgpd">I accept the <Link className='text-blue-500' to="utilisation.html">terms of use</Link> and the <Link className='text-blue-500' to="#">privacy policy</Link></label>

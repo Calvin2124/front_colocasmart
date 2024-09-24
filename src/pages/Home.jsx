@@ -17,7 +17,7 @@ return (
                     <h1>Vivre ensemble,<br/> <span>C'est simple avec Colocasmart.</span></h1>
                     <p>Simplifiez votre vie en colocation grâce à nos outils de gestion quotidiens et financiers.</p>
                 </div>
-                <Link className='z-10' id='btnFree' to="#">Inscrivez-vous gratuitement</Link>
+                <Link className='z-10' id='btnFree' to="/register">Inscrivez-vous gratuitement</Link>
             </div>
         </section>
 
@@ -54,7 +54,7 @@ return (
         {/* SECTION 3 */}
         <section id="pret">
             <h2>Prêt à Simplifier Votre Vie en Colocation ?</h2>
-            <a href="#">Inscrivez-vous gratuitement</a>
+            <Link to="/register">Inscrivez-vous gratuitement</Link>
         </section>
         {/* SECTION 4 */}
         <section id="video">
