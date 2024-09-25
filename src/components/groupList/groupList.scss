@@ -1,0 +1,14 @@
+.groupAside{
+    a{
+        color: #000;
+        transition: all 0.2s ease;
+        &:hover{
+            font-weight: bold;
+        }
+    }
+    .addGroup{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+    }
+}

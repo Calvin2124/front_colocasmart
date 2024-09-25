@@ -1,0 +1,69 @@
+$primaryColor: #FEFDFD;
+$greenColor: #03C490;
+$azureBlue: #6595F3;
+$white: #FFFFFF;
+$black: #000000;
+
+@mixin button ($color, $border, $bgColor, $colorHover, $bgColorHover, $borderHover){
+    color: $color;
+    border: $border;
+    background-color: $bgColor;
+    transition: all 0.3s ease;
+    &:hover {
+        color: $colorHover;
+        background-color: $bgColorHover;
+        border: $borderHover;
+    }
+}
+
+.btnLogin {
+    @include button($white, 2px solid $azureBlue, $azureBlue, $white, $greenColor, 2px solid $greenColor);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+.btnRegister {
+    @include button($black, 1px solid $black, $white, $white, $greenColor, 1px solid $greenColor);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+
+.modal{
+    background-color: transparent;
+    margin-bottom: 5px;
+}
+
+.container{
+    width: 500px;
+    height: 500px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    .left{
+        background-image: url('./couple.webp');
+        height: 100%;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-position: center;
+    }
+    #addGroup{
+        @include button($black, 1px solid $black, $white, $white, $azureBlue, 1px solid $azureBlue);
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+    .right{
+        background-image: url('./womenIdea.webp');
+        height: 100%;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-position: center;
+    }
+    #createGroup{
+        @include button($white, 1px solid $greenColor, $greenColor, $white, $azureBlue, 1px solid $azureBlue);
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+}

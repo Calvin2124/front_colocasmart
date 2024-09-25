@@ -1,0 +1,42 @@
+$primaryColor: #FEFDFD;
+$greenColor: #03C490;
+$azureBlue: #6595F3;
+$white: #FFFFFF;
+$black: #000000;
+$darkGrey: #454545;
+$mediumGrey: #757575;
+$veryLightGrey: #F0F0F0;
+$primaryColor: #FEFDFD;
+$veryLightGrey2: #F5F5F5;
+$mediumGrey2: #808181;
+
+.headerHomeConnect{
+    background-color: $greenColor;
+}
+
+#footerGreen{
+    background-color: $greenColor;
+    color: $black;
+}
+
+#mainconnect{
+    background-color: $greenColor;
+    padding: 50px;
+    .contentConnected{
+        display: grid;
+        grid-template-columns: 20% 80%;
+        max-width: 1440px;
+        margin: auto;
+        background-color: #fff;
+        border-radius: 20px;
+        padding: 0 15px;
+    }
+    #sectionGroup{
+        background-color: $greenColor;
+        margin: 30px;
+        border-radius: 10px;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}

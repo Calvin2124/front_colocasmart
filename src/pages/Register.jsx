@@ -5,6 +5,7 @@ import '../styles/registerLogin.scss';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 import registerImg from '../assets/img/register.webp'
+import HeaderGreen from '../components/headerGreen/HeaderGreen';
 
 export default function Register() {
     const [userName, setUserName] = useState('');
@@ -19,9 +20,7 @@ export default function Register() {
     };
     return (
         <>
-            <header className='headerRegisterLogin'>
-                <Link className='flex justify-center' to="/"><img src={logoBlack} alt="logo" className="h-32 w-32" /></Link>
-            </header>
+            <HeaderGreen />
             <main>
                 <section className='formRegisterLogin py-36 px-5'>
                     <div className='divForm max-w-7xl mx-auto flex flex-col items-center justify-center p-4 sm:p-6 lg:px-8'>

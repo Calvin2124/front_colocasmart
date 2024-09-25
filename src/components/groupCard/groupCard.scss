@@ -1,0 +1,18 @@
+.articleGroup{
+    background-color: #F5F5F5;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    .btnEnter{
+        background-color: #6e71cc;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: all 0.2s ease;
+        margin: auto;
+        &:hover{
+            background-color: #3c3f9a;
+            color: #fff;
+        }
+    }
+}

@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import ForgotPass from './pages/ForgotPass';
+import HomeConect from './pages/HomeConect';
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/forgot' element={<ForgotPass />} />
+        <Route path='/connected' element={<HomeConect />} />
       </Routes>
     </Router>
   );
