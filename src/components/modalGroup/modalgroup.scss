@@ -36,8 +36,8 @@ $black: #000000;
 .container{
     width: 500px;
     height: 500px;
-    display: grid;
-    grid-template-columns: 50% 50%;
+    // display: grid;
+    // grid-template-columns: 50% 50%;
     .left{
         background-image: url('./couple.webp');
         height: 100%;
