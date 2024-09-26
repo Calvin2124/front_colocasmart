@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import ForgotPass from './pages/ForgotPass';
 import HomeConect from './pages/HomeConect';
 import HomeGroup from './pages/HomeGroup';
+import UserProfil from './pages/UserProfil';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path='/forgot' element={<ForgotPass />} />
         <Route path='/connected' element={<HomeConect />} />
         <Route path='/homegroup' element={<HomeGroup />} />
+        <Route path='/userprofil' element={<UserProfil />} />
       </Routes>
     </Router>
   );

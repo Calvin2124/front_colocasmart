@@ -18,7 +18,7 @@ export default function GroupList({ title, bouton, listName }) {
                         </Link>
                     </li>
                 ))}
-                    <ModalGroup isOpen={isOpen} setIsOpen={setIsOpen} bouton={bouton}/>
+                    <ModalGroup isOpen={isOpen} setIsOpen={setIsOpen} bouton={bouton} title={title}/>
             </ul>
             
         </div>

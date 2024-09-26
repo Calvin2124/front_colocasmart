@@ -6,8 +6,7 @@ import AddGroupForm from '../addGroupForm/AddGroupForm';
 import JoinGroupForm from '../joinGroupForm/JoinGroupForm';
 import './modalgroup.scss';
 
-export default function EnhancedModal({ bouton, title }) {
-    console.log(title);
+export default function EnhancedModal(bouton,title) {
 const [modalState, setModalState] = useState({
     isOpen: false,
     gridTemplate: '50% 50%',
@@ -30,7 +29,6 @@ const resetToInitialState = useCallback(() => {
     rightClicked: false,
     });
 }, [updateModalState]);
-
 
 const handleLeftMouseOver = useCallback(() => {
     if (!modalState.leftClicked && !modalState.rightClicked) {
@@ -74,7 +72,21 @@ const handleRightClick = useCallback(() => {
     });
 }, [updateModalState]);
 
-const renderGroupModal = () => (
+return (
+    <>
+    <li>
+        <Link className="addGroup" href="#" onClick={() => updateModalState({ isOpen: true })}>
+        <CirclePlus className="w-3 h-3" /> <span>{bouton}</span>
+        </Link>
+    </li>
+
+    <Dialog 
+        open={modalState.isOpen} 
+        onClose={() => updateModalState({ isOpen: false })} 
+        className="relative z-50"
+    >
+        <div className="fixed inset-0 bg-black opacity-30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="modal max-w-5xl mx-auto bg-white rounded relative">
             <CircleX 
             onClick={() => updateModalState({ isOpen: false })} 
@@ -141,57 +153,8 @@ const renderGroupModal = () => (
             </div>
             </div>
         </Dialog.Panel>
-);
-
-const renderTaskModal = () => (
-    <Dialog.Panel className="modal max-w-md mx-auto bg-white rounded relative p-6">
-    <CircleX 
-        onClick={() => updateModalState({ isOpen: false })} 
-        className="cursor-pointer absolute top-2 right-2 text-gray-500 hover:text-gray-700 z-10"
-    />
-    <h2 className="text-2xl font-bold mb-4">Ajouter une tâche</h2>
-    <form>
-        <div className="mb-4">
-        <label htmlFor="taskName" className="block text-sm font-medium text-gray-700">Nom de la tâche</label>
-        <input type="text" id="taskName" name="taskName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-        </div>
-        <div className="mb-4">
-        <label htmlFor="taskDescription" className="block text-sm font-medium text-gray-700">Description</label>
-        <textarea id="taskDescription" name="taskDescription" rows="3" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
-        </div>
-        <div className="mb-4">
-        <label htmlFor="taskDueDate" className="block text-sm font-medium text-gray-700">Date d'échéance</label>
-        <input type="date" id="taskDueDate" name="taskDueDate" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-        </div>
-        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-        Ajouter la tâche
-        </button>
-    </form>
-    </Dialog.Panel>
-);
-
-return (
-    <>
-    <li>
-        <Link className="addGroup" href="#" onClick={() => updateModalState({ isOpen: true })}>
-        <CirclePlus className="w-3 h-3" /> <span>{bouton}</span>
-        </Link>
-    </li>
-
-    <Dialog 
-        open={modalState.isOpen} 
-        onClose={() => updateModalState({ isOpen: false })} 
-        className="relative z-50"
-    >
-        <div className="fixed inset-0 bg-black opacity-30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-        {title && (title.toLowerCase() === 'groupe'
-            ? renderGroupModal()
-            : title.toLowerCase() === 'task'
-            ? renderTaskModal()
-            : null)}
         </div>
     </Dialog>
     </>
 );
-}
+};
