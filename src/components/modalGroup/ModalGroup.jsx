@@ -1,126 +1,98 @@
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Dialog } from '@headlessui/react';
 import { CirclePlus, CircleX, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import AddGroupForm from '../addGroupForm/AddGroupForm';
+import JoinGroupForm from '../joinGroupForm/JoinGroupForm';
 import './modalgroup.scss';
 
 const EnhancedModal = ({ bouton }) => {
-const [isOpen, setIsOpen] = useState(false);
-const [gridTemplate, setGridTemplate] = useState('50% 50%');
-const [leftVisible, setLeftVisible] = useState(true);
-const [rightVisible, setRightVisible] = useState(true);
-const [leftClicked, setLeftClicked] = useState(false);
-const [rightClicked, setRightClicked] = useState(false);
+const [modalState, setModalState] = useState({
+    isOpen: false,
+    gridTemplate: '50% 50%',
+    leftVisible: true,
+    rightVisible: true,
+    leftClicked: false,
+    rightClicked: false,
+});
 
-const applyGridTemplate = (columns) => {
-    setGridTemplate(columns);
-};
+const updateModalState = useCallback((newState) => {
+    setModalState(prevState => ({ ...prevState, ...newState }));
+}, []);
 
-const resetToInitialState = () => {
-    setGridTemplate('50% 50%');
-    setLeftVisible(true);
-    setRightVisible(true);
-    setLeftClicked(false);
-    setRightClicked(false);
-};
+const resetToInitialState = useCallback(() => {
+    updateModalState({
+    gridTemplate: '50% 50%',
+    leftVisible: true,
+    rightVisible: true,
+    leftClicked: false,
+    rightClicked: false,
+    });
+}, [updateModalState]);
 
-const handleLeftMouseOver = () => {
-    if (!leftClicked && !rightClicked) {
-    applyGridTemplate("70% 30%");
-    setRightVisible(false);
+const handleLeftMouseOver = useCallback(() => {
+    if (!modalState.leftClicked && !modalState.rightClicked) {
+    updateModalState({ gridTemplate: "70% 30%", rightVisible: false });
     }
-};
+}, [modalState.leftClicked, modalState.rightClicked, updateModalState]);
 
-const handleLeftMouseOut = () => {
-    if (!leftClicked && !rightClicked) {
-    applyGridTemplate("50% 50%");
-    setRightVisible(true);
+const handleLeftMouseOut = useCallback(() => {
+    if (!modalState.leftClicked && !modalState.rightClicked) {
+    updateModalState({ gridTemplate: "50% 50%", rightVisible: true });
     }
-};
+}, [modalState.leftClicked, modalState.rightClicked, updateModalState]);
 
-const handleRightMouseOver = () => {
-    if (!leftClicked && !rightClicked) {
-    applyGridTemplate("30% 70%");
-    setLeftVisible(false);
+const handleRightMouseOver = useCallback(() => {
+    if (!modalState.leftClicked && !modalState.rightClicked) {
+    updateModalState({ gridTemplate: "30% 70%", leftVisible: false });
     }
-};
+}, [modalState.leftClicked, modalState.rightClicked, updateModalState]);
 
-const handleRightMouseOut = () => {
-    if (!leftClicked && !rightClicked) {
-    applyGridTemplate("50% 50%");
-    setLeftVisible(true);
+const handleRightMouseOut = useCallback(() => {
+    if (!modalState.leftClicked && !modalState.rightClicked) {
+    updateModalState({ gridTemplate: "50% 50%", leftVisible: true });
     }
-};
+}, [modalState.leftClicked, modalState.rightClicked, updateModalState]);
 
-const handleLeftClick = () => {
-    setLeftClicked(true);
-    setRightClicked(false);
-    applyGridTemplate("100% 0%");
-    setRightVisible(false);
-};
+const handleLeftClick = useCallback(() => {
+    updateModalState({
+    leftClicked: true,
+    rightClicked: false,
+    gridTemplate: "100% 0%",
+    rightVisible: false
+    });
+}, [updateModalState]);
 
-const handleRightClick = () => {
-    setRightClicked(true);
-    setLeftClicked(false);
-    applyGridTemplate("0% 100%");
-    setLeftVisible(false);
-};
-
-const AddGroupForm = () => (
-    <form className="space-y-4 p-6 bg-white bg-opacity-90 rounded-lg">
-    <h2 className="text-2xl font-bold mb-4 text-blue-600">Ajouter un groupe</h2>
-    <div>
-        <label htmlFor="groupName" className="block text-sm font-medium text-gray-700">Nom du groupe</label>
-        <input type="text" id="groupName" name="groupName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
-    </div>
-    <div>
-        <label htmlFor="createGroupPass" className="block text-sm font-medium text-gray-700">Mot de passe du groupe</label>
-        <input type="password" id="createGroupPass" name="createGroupPass" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
-    </div>
-    <div>
-        <label htmlFor="confirmGroupPass" className="block text-sm font-medium text-gray-700">Mot de passe du groupe</label>
-        <input type="password" id="confirmGroupPass" name="confirmGroupPass" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
-    </div>
-    <button type="submit" className="w-full bg-blue-600 text-white rounded-md py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-        Créer le groupe
-    </button>
-    </form>
-);
-
-const JoinGroupForm = () => (
-    <form className="space-y-4 p-6 bg-white bg-opacity-90 rounded-lg">
-    <h2 className="text-2xl font-bold mb-4 text-green-600">Rejoindre un groupe</h2>
-    <div>
-        <label htmlFor="groupName" className="block text-sm font-medium text-gray-700">Nom du groupe</label>
-        <input type="text" id="groupName" name="groupName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
-    </div>
-    <div>
-        <label htmlFor="groupPass" className="block text-sm font-medium text-gray-700">Mot de passe du groupe</label>
-        <input type="text" id="groupPass" name="groupPass" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
-    </div>
-    <button type="submit" className="w-full bg-green-600 text-white rounded-md py-2 px-4 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
-        Rejoindre le groupe
-    </button>
-    </form>
-);
+const handleRightClick = useCallback(() => {
+    updateModalState({
+    rightClicked: true,
+    leftClicked: false,
+    gridTemplate: "0% 100%",
+    leftVisible: false
+    });
+}, [updateModalState]);
 
 return (
     <>
     <li>
-        <Link className="addGroup" href="#" onClick={() => setIsOpen(true)}>
+        <Link className="addGroup" href="#" onClick={() => updateModalState({ isOpen: true })}>
         <CirclePlus className="w-3 h-3" /> <span>{bouton}</span>
         </Link>
     </li>
 
-    <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
+    <Dialog 
+        open={modalState.isOpen} 
+        onClose={() => updateModalState({ isOpen: false })} 
+        className="relative z-50"
+    >
         <div className="fixed inset-0 bg-black opacity-30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="modal max-w-5xl mx-auto bg-white rounded relative">
             <CircleX 
-            onClick={() => setIsOpen(false)} 
+            onClick={() => updateModalState({ isOpen: false })} 
             className="cursor-pointer absolute top-2 right-2 text-gray-500 hover:text-gray-700 z-10"
             />
-            {(leftClicked || rightClicked) && (
+            {(modalState.leftClicked || modalState.rightClicked) && (
             <button
                 onClick={resetToInitialState}
                 className="absolute top-2 left-2 flex items-center text-blue-600 hover:text-blue-800 z-10"
@@ -131,7 +103,7 @@ return (
             )}
             <div className='container' style={{ 
             display: 'grid', 
-            gridTemplateColumns: gridTemplate, 
+            gridTemplateColumns: modalState.gridTemplate, 
             transition: 'grid-template-columns 0.3s ease',
             height: '500px',
             }}>
@@ -141,16 +113,15 @@ return (
                 onMouseOut={handleLeftMouseOut}
                 onClick={handleLeftClick}
                 style={{ 
-                transition: 'opacity 0.3s ease',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 }}
             >
-                {!leftClicked ? (
+                {!modalState.leftClicked ? (
                 <Link 
                     id='addGroup' 
-                    className="text-blue-600 hover:text-blue-800 text-lg font-semibold bg-white bg-opacity-75 px-4 py-2 rounded"
-                    style={{ opacity: leftVisible ? 1 : 0 }}
+                    className="text-lg font-semibold bg-white bg-opacity-75 px-4 py-2 rounded"
+                    style={{ opacity: modalState.leftVisible ? 1 : 0 }}
                 >
                     Ajouter un groupe
                 </Link>
@@ -164,16 +135,15 @@ return (
                 onMouseOut={handleRightMouseOut}
                 onClick={handleRightClick}
                 style={{ 
-                transition: 'opacity 0.3s ease',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 }}
             >
-                {!rightClicked ? (
+                {!modalState.rightClicked ? (
                 <Link 
                     id='createGroup' 
-                    className="text-green-600 hover:text-green-800 text-lg font-semibold bg-white bg-opacity-75 px-4 py-2 rounded"
-                    style={{ opacity: rightVisible ? 1 : 0 }}
+                    className="text-lg font-semibold bg-white bg-opacity-75 px-4 py-2 rounded"
+                    style={{ opacity: modalState.rightVisible ? 1 : 0 }}
                 >
                     Rejoindre un groupe
                 </Link>

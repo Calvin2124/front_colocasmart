@@ -26,6 +26,9 @@ export default function Sidebar({title, btnAdd, listName}) {
             {titleSidebar.toLowerCase() === 'groupe' && (
                 <Link className="disconnect" href="/">Déconnexion</Link>
                 )}
+            {titleSidebar.toLowerCase() === 'task' && (
+                <Link className="disconnect" href="/">Home</Link>
+            )}
         </aside>
         </>
     )

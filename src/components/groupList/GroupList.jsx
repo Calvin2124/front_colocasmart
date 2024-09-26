@@ -4,10 +4,7 @@ import './groupList.scss';
 import { useState } from "react";
 import ModalGroup from "../modalGroup/ModalGroup";
 
-
-
 export default function GroupList({ title, bouton, listName }) {
-    const listNameGroupe = listName;
     const [isOpen, setIsOpen] = useState(false);
     return (
         <>
