@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 export default function HeaderGreen() {
     return (
         <>
-        <header className='headerRegisterLogin'>
-            <Link className='flex justify-center' to="/"><img src={logoBlack} alt="logo" className="h-32 w-32" /></Link>
+        <header className='headerRegisterLogin flex justify-center'>
+            <Link className='' to="/"><img src={logoBlack} alt="logo" className="h-32 w-32" /></Link>
         </header>
         </>
     )

@@ -1,8 +1,19 @@
 import { Link } from "react-router-dom";
 import logoBlack from '../assets/img/logoBlack.webp';
 import { UserRoundCog, UserRoundPen } from "lucide-react";
+import { useState } from "react";
+import FormProfil from "../components/formProfil/FormProfil";
 
 export default function UserProfil() {
+    const[afficher, setAfficher] = useState('edit');
+    const handleClickProfile = (e) => {
+        e.preventDefault();
+        setAfficher('edit');
+    };
+    const handleClickAccount = (e) => {
+        e.preventDefault();
+        setAfficher('account');
+    };
     return (
         <>
         <header className='headerHomeConnect'>
@@ -17,12 +28,13 @@ export default function UserProfil() {
                         <h1>Profil</h1>
                     </div>
                     <hr/>
-                    <Link className="hover:text-purple-600 transition-all flex gap-1 items-center mb-8" to="/"><UserRoundPen /> Mon profil</Link>
-                    <Link className="hover:text-purple-600 transition-all flex gap-1 items-center" to="/"><UserRoundCog /> Mon compte</Link>
+                    <Link className="hover:text-purple-600 transition-all flex gap-1 items-center mb-8" onClick={handleClickProfile} to="/"><UserRoundPen /> Mon profil</Link>
+                    <Link className="hover:text-purple-600 transition-all flex gap-1 items-center" onClick={handleClickAccount} to="/"><UserRoundCog /> Mon compte</Link>
                     <hr/>
                     <Link className="disconnect" to="/">Retour</Link>
                 </aside>
                     <section id='sectionGroup'>
+                    <FormProfil afficher={afficher} />
                     </section>
                 </div>
             </section>
