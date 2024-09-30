@@ -8,6 +8,8 @@ $greenColor: #03C490;
 $azureBlue: #6595F3;
 $white: #FFFFFF;
 $black: #000000;
+$red: #E25151;
+$redHover: #C63D3D;
 
 @mixin button ($color, $border, $bgColor, $colorHover, $bgColorHover, $borderHover){
     color: $color;
@@ -28,6 +30,11 @@ $black: #000000;
 }
 .btnRegister {
     @include button($black, 1px solid $black, $white, $white, $greenColor, 1px solid $greenColor);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+.btnConnected {
+    @include button($white, 1px solid $red, $red, $black, $redHover, 1px solid $redHover);
     padding: 10px 20px;
     border-radius: 5px;
 }

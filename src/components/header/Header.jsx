@@ -6,6 +6,7 @@ import '../header/header.scss';
 
 export default function Header() {
 const [isMenuOpen, setIsMenuOpen] = useState(false);
+const [connected, setConnected] = useState(false);
 
 return (
     <>
@@ -21,8 +22,18 @@ return (
             <li><Link className="cursor-pointer" to="/">Accueil</Link></li>
             <li><Link className="cursor-pointer" to="">A propos</Link></li>
             <li><Link className="cursor-pointer" to="/">Contact</Link></li>
-            <li><Link className="btnLogin cursor-pointer" to="/login">Se connecter</Link></li>
-            <li><Link className="btnRegister cursor-pointer" to="/register">S'inscrire</Link></li>
+            {
+                connected ? (
+                    <>
+                    <li><Link className="btnConnected cursor-pointer" to="/">Déconnexion</Link></li>
+                    </>
+                ) : (
+                    <>
+                    <li><Link className="btnLogin cursor-pointer" to="/login">Se connecter</Link></li>
+                    <li><Link className="btnRegister cursor-pointer" to="/register">S'inscrire</Link></li>
+                    </>
+                )
+                }
             </ul>
         </nav>
 

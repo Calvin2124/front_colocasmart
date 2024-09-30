@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import logoBlack from '../assets/img/logoBlack.webp';
 import Footer from '../components/footerWhite/Footer';
 import '../styles/registerLogin.scss';
 import { X } from 'lucide-react';
@@ -8,15 +7,52 @@ import registerImg from '../assets/img/register.webp'
 import HeaderGreen from '../components/headerGreen/HeaderGreen';
 
 export default function Register() {
-    const [userName, setUserName] = useState('');
+    const [username, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [rgpd, setRgpd] = useState(false);
-    const [password, setPassword] = useState('');
+    const [password_hash, setPasswordHash] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [passError, setPassError] = useState('');
+    const [mailError, setMailError] = useState('');
+    const [error, setError] = useState('');
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(userName, email, password, confirmPassword);
+        console.log(username, email, password_hash, confirmPassword);
+        if (password_hash !== confirmPassword) {
+            setPassError('Passwords do not match');
+        } else {
+            setPassError('');
+            try {
+                console.log(username, email, password_hash);
+                setError('');
+                const response = await fetch('http://localhost:3000/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password_hash,
+                    }),
+                });
+                const data = await response.json();
+                console.log(data);
+                // Si le mail exist deja dans la base de données
+                if (data.message === true) {
+                    setMailError('User already exist');
+                } else {
+                    // Si le mail n'exist pas dans la base de données
+                    setMailError('');
+                    window.location.href = '/login';
+                }
+            
+            } catch (error) {
+                console.error(error);
+            }
+        }
     };
     return (
         <>
@@ -35,13 +71,14 @@ export default function Register() {
                             onSubmit={handleSubmit}
                             >
                                 <input 
-                                    value={userName}
+                                    value={username}
                                     onChange={(e) => setUserName(e.target.value)}
                                     type="text" 
                                     id="userName" 
                                     name="userName" 
                                     placeholder="Username" 
                                     required/>
+                                    {mailError && <p className='text-red-500'>{mailError}</p>}
                                 <input 
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -50,9 +87,10 @@ export default function Register() {
                                     name="email" 
                                     placeholder="Email" 
                                     required/>
+                                    {passError && <p className='text-red-500'>{passError}</p>}
                                 <input 
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password_hash}
+                                    onChange={(e) => setPasswordHash(e.target.value)}
                                     type="password" 
                                     id="password" 
                                     name="password" 
@@ -68,7 +106,7 @@ export default function Register() {
                                     required/>
                                 <p>You already have an account? <Link className='text-blue-500' to="/login">Login</Link></p>
                                 <div>
-                                    <input type="checkbox" id="rgpd" name="rgpd" required/>
+                                    <input type="checkbox" id="rgpd" name="rgpd"/>
                                     <label htmlFor="rgpd">I accept the <Link className='text-blue-500' to="utilisation.html">terms of use</Link> and the <Link className='text-blue-500' to="#">privacy policy</Link></label>
                                 </div>
                                 <button className="btnBlue">Sign up</button>

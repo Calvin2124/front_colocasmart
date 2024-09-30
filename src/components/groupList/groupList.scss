@@ -1,9 +1,11 @@
+$greenColor: #03C490;
+
 .groupAside{
     a{
         color: #000;
         transition: all 0.2s ease;
         &:hover{
-            font-weight: bold;
+            color: $greenColor;
         }
     }
     .addGroup{
@@ -11,4 +13,16 @@
         align-items: center;
         font-size: 14px;
     }
+}
+
+@media screen and (max-width:1023px){
+    .groupAside{
+        text-align: center;
+        ul{
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+    }
+
 }

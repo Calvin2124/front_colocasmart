@@ -10,10 +10,29 @@ import HeaderGreen from '../components/headerGreen/HeaderGreen';
 export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log( email, password);
+        try{
+            const res = await fetch('http://localhost:3000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            });
+            const req = await res.json();
+            console.log(req);
+            if (data.message === true) {
+                window.location.href = '/connected';
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
     return (
         <>
@@ -28,6 +47,7 @@ export default function Register() {
                             <div className='flex flex-col items-center gap-4'>
                                 <h2 className='text-4xl'>Se connecter</h2>
                                 <form action="#" onSubmit={handleSubmit}>
+                                    {error && <p className='text-red-500'>{error}</p>}
                                     <input 
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}

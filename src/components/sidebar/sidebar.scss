@@ -2,12 +2,18 @@ aside{
     display: flex;
     flex-direction: column;
     align-items: start;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 20px;
     hr{
         width: 100%;
         margin: 20px auto;
         border: 1px solid #7B7ED0;
+        @media screen and (max-width:1023px){
+            margin: 10px auto;
+            border: 1px solid #7B7ED0;
+            width: 0;
+            height: 100%;
+        }
     }
     .disconnect{
         padding: 10px 20px;
@@ -19,5 +25,11 @@ aside{
         &:hover{
             background-color: #C63D3D;
         }
+    }
+}
+@media screen and (max-width:1023px){
+    aside{
+        flex-direction: row;
+        align-items: center;
     }
 }

@@ -34,6 +34,10 @@ export default function Contact() {
         
                 if (response.ok) {
                     console.log("Message envoyé avec succès !");
+                    setEmail("");
+                    setMessage("");
+                    setUsername("");
+                    setRgpd(false);
                 } else {
                     console.error("Échec de l'envoi du message.");
                 }

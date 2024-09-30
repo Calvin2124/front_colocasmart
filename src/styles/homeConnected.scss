@@ -30,6 +30,10 @@ $mediumGrey2: #808181;
         background-color: #fff;
         border-radius: 20px;
         padding: 0 15px;
+        @media screen and (max-width:1023px){
+            grid-template-columns: 100%;
+            justify-content: center;
+        }
     }
     #sectionGroup{
         background-color: $greenColor;
