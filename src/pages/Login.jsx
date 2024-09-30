@@ -26,9 +26,17 @@ export default function Register() {
                 }),
             });
             const req = await res.json();
-            console.log(req);
-            if (data.message === true) {
+            if (req.message === true) {
+                const userParam = {
+                    id: req.idUser,
+                    username: req.username,
+                    token: req.token,
+                };
+                sessionStorage.setItem('user', JSON.stringify(userParam));
                 window.location.href = '/connected';
+                setError('');
+            } else {
+                setError('Email or password incorrect');
             }
         } catch (error) {
             console.error(error);
@@ -67,7 +75,7 @@ export default function Register() {
                                     <Link className='text-blue-500' to="/forgot">Mot de passe oublié ?</Link>
                                     <p>Vous n'avez pas de compte ? <Link className='text-blue-500' to="/register">S'inscrire</Link></p>
                                     <div>
-                                        <input type="checkbox" id="souvenir" name="souvenir" required/>
+                                        <input type="checkbox" id="souvenir" name="souvenir"/>
                                         <label htmlFor="souvenir">Se souvenir de moi</label>
                                     </div>
                                     <button className="btnBlue">Log in</button>
