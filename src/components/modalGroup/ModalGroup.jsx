@@ -7,7 +7,6 @@ import JoinGroupForm from '../joinGroupForm/JoinGroupForm';
 import './modalgroup.scss';
 
 export default function EnhancedModal({ bouton, title }) {
-    console.log(title);
 const [modalState, setModalState] = useState({
     isOpen: false,
     gridTemplate: '50% 50%',
