@@ -6,11 +6,12 @@ import Sidebar from '../components/sidebar/Sidebar';
 import { useEffect, useState } from 'react';
 
 export default function HomeConect() {
+    const session = sessionStorage.getItem('user');
     const title = 'Groupe';
     const listName = ['un test 1', 'Groupe 2', 'Groupe 3', 'Groupe 4'];
     const btnAdd = 'Add';
-    const session = sessionStorage.getItem('user');
     const sessionToken = JSON.parse(session);
+    console.log(JSON.parse(session).id);
 
     // États pour gérer les données, les erreurs et le chargement
     const [data, setData] = useState(null);
@@ -77,6 +78,7 @@ export default function HomeConect() {
                             title={title}
                             btnAdd={btnAdd}
                             listName={listName}
+                            username={JSON.parse(session).username}
                         />
                         <section id='sectionGroup'>
                             <GroupCard />

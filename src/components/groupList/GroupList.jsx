@@ -1,4 +1,3 @@
-import { CirclePlus } from "lucide-react";
 import { Link } from "react-router-dom";
 import './groupList.scss';
 import { useState } from "react";
