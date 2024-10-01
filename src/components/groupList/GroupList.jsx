@@ -3,17 +3,17 @@ import './groupList.scss';
 import { useState } from "react";
 import ModalGroup from "../modalGroup/ModalGroup";
 
-export default function GroupList({ title, bouton, listName }) {
+export default function GroupList({ title, bouton, datas }) {
     const [isOpen, setIsOpen] = useState(false);
     return (
         <>
         <div className="groupAside">
             <h2 className="text-4xl mb-5">{title}</h2>
             <ul>
-                {listName.map((group, index) => (
+                {datas.map((data, index) => (
                     <li key={index}>
                         <Link className="groupName" to="/">
-                            {group}
+                            {data.group.name}
                         </Link>
                     </li>
                 ))}

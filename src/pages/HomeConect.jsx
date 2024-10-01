@@ -11,22 +11,24 @@ export default function HomeConect() {
     const listName = ['un test 1', 'Groupe 2', 'Groupe 3', 'Groupe 4'];
     const btnAdd = 'Add';
     const sessionToken = JSON.parse(session);
-    console.log(JSON.parse(session).id);
 
     // États pour gérer les données, les erreurs et le chargement
-    const [data, setData] = useState(null);
+    const [datas, setDatas] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/home/connected', {
-                    method: 'GET',
+                const response = await fetch('http://localhost:3000/api/home/connected', {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${sessionToken.token}`,
                     },
+                    body: JSON.stringify({
+                        id: sessionToken.id,
+                    }),
                 });
                 
                 if (!response.ok) {
@@ -34,7 +36,7 @@ export default function HomeConect() {
                 }
                 
                 const result = await response.json();
-                setData(result); // Stockez les données si la réponse est positive
+                setDatas(result); // Stockez les données si la réponse est positive
                 setLoading(false); // Arrêtez le chargement
             } catch (error) {
                 console.error(error);
@@ -48,19 +50,18 @@ export default function HomeConect() {
 
     // Affichage conditionnel en fonction des états
     if (loading) {
-        return <p>Chargement...</p>;
-        ; // Affiche un message de chargement pendant la récupération
+        return (<div className='loaderCenter'>
+                    <div className="loader">
+                        <span className="loader-text">loading</span>
+                        <span className="load"></span>
+                    </div>  
+                </div>
+        ); // Affiche un message de chargement pendant la récupération
 
     }
 
     if (error) {
-        return (
-            <div className='loaderCenter'>
-                <div className="loader">
-                    <span className="loader-text">loading</span>
-                    <span className="load"></span>
-                </div>  
-            </div>
+        return (<p>Une erreur est survenue lors de la récupération des données.</p>
         );
     }
 
@@ -77,14 +78,21 @@ export default function HomeConect() {
                         <Sidebar
                             title={title}
                             btnAdd={btnAdd}
-                            listName={listName}
+                            listName={datas}
                             username={JSON.parse(session).username}
                         />
                         <section id='sectionGroup'>
-                            <GroupCard />
-                            <GroupCard />
-                            <GroupCard />
-                            <GroupCard />
+                            {/* Si aucun groupe n'est connecté on affiche le message "Vous n'avez aucun groupe connecté" */}
+                            {datas.length === 0 && (
+                                <div className="flex flex-col items-center justify-center">
+                                    <p className="text-2xl">Vous n'avez aucun groupe connecté</p>
+                                </div>
+                            )}
+                            {/* Si des groupes existent faire un map */}
+                            {datas.map((data) => (
+                                <GroupCard key={data.id} group={data} />
+                            ))}
+                            
                         </section>
                     </div>
                 </section>

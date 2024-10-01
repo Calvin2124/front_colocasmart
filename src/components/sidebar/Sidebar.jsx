@@ -3,6 +3,7 @@ import GroupList from "../groupList/GroupList";
 import './sidebar.scss';
 
 export default function Sidebar({title, btnAdd, listName, username}) {
+    console.log(listName);
     const titleSidebar = title;
     const btnSidebar = btnAdd;
     return (
@@ -20,7 +21,7 @@ export default function Sidebar({title, btnAdd, listName, username}) {
             <GroupList
                 title={titleSidebar}
                 bouton={btnSidebar}
-                listName={listName}
+                listName={datas}
             />
             <hr/>
             {titleSidebar.toLowerCase() === 'groupe' && (
