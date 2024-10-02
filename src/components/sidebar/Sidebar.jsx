@@ -2,10 +2,14 @@ import { Link } from "react-router-dom";
 import GroupList from "../groupList/GroupList";
 import './sidebar.scss';
 
-export default function Sidebar({title, btnAdd, listName, username}) {
-    console.log(listName);
+export default function Sidebar({title, btnAdd, listName, username, onGroupAdded}) {
     const titleSidebar = title;
     const btnSidebar = btnAdd;
+    const handleClick = (e) => {
+        e.preventDefault();
+        sessionStorage.clear();
+        window.location.replace("/login")
+    }
     return (
         <>
         <aside>
@@ -21,11 +25,12 @@ export default function Sidebar({title, btnAdd, listName, username}) {
             <GroupList
                 title={titleSidebar}
                 bouton={btnSidebar}
-                listName={datas}
+                listName={listName}
+                onGroupAdded={onGroupAdded}
             />
             <hr/>
             {titleSidebar.toLowerCase() === 'groupe' && (
-                <Link className="disconnect" href="/">Déconnexion</Link>
+                <Link onClick={handleClick} className="disconnect" href="/login">Déconnexion</Link>
                 )}
             {titleSidebar.toLowerCase() === 'task' && (
                 <Link className="disconnect" href="/">Home</Link>

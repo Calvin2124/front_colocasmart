@@ -1,68 +1,69 @@
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import logoBlack from '../assets/img/logoBlack.webp';
 import '../styles/homeConnected.scss';
 import GroupCard from '../components/groupCard/GroupeCard';
 import Sidebar from '../components/sidebar/Sidebar';
-import { useEffect, useState } from 'react';
 
-export default function HomeConect() {
+export default function HomeConnect() {
     const session = sessionStorage.getItem('user');
     const title = 'Groupe';
-    const listName = ['un test 1', 'Groupe 2', 'Groupe 3', 'Groupe 4'];
     const btnAdd = 'Add';
-    const sessionToken = JSON.parse(session);
+    const sessionTokenRef = useRef(JSON.parse(session));
 
-    // États pour gérer les données, les erreurs et le chargement
     const [datas, setDatas] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/api/home/connected', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionToken.token}`,
-                    },
-                    body: JSON.stringify({
-                        id: sessionToken.id,
-                    }),
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP : ${response.status}`); // Gérer les erreurs de réponse
-                }
-                
-                const result = await response.json();
-                setDatas(result); // Stockez les données si la réponse est positive
-                setLoading(false); // Arrêtez le chargement
-            } catch (error) {
-                console.error(error);
-                setError('Une erreur est survenue lors de la récupération des données.'); // Message d'erreur générique
-                setLoading(false); // Arrêtez le chargement
+    const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await fetch('http://localhost:3000/api/home/connected', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionTokenRef.current.token}`,
+                },
+                body: JSON.stringify({
+                    id: sessionTokenRef.current.id,
+                }),
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
             }
-        };
-
-        fetchData(); // Appel de la fonction pour récupérer les données
+            
+            const result = await response.json();
+            setDatas(result);
+        } catch (error) {
+            console.error(error);
+            setError('Une erreur est survenue lors de la récupération des données.');
+        } finally {
+            setLoading(false);
+        }
     }, []);
 
-    // Affichage conditionnel en fonction des états
-    if (loading) {
-        return (<div className='loaderCenter'>
-                    <div className="loader">
-                        <span className="loader-text">loading</span>
-                        <span className="load"></span>
-                    </div>  
-                </div>
-        ); // Affiche un message de chargement pendant la récupération
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
+    const handleGroupAdded = useCallback(() => {
+        fetchData();
+    }, [fetchData]);
+
+    if (loading) {
+        return (
+            <div className='loaderCenter'>
+                <div className="loader">
+                    <span className="loader-text">loading</span>
+                    <span className="load"></span>
+                </div>  
+            </div>
+        );
     }
 
     if (error) {
-        return (<p>Une erreur est survenue lors de la récupération des données.</p>
-        );
+        return <p>Une erreur est survenue lors de la récupération des données.</p>;
     }
 
     return (
@@ -80,19 +81,18 @@ export default function HomeConect() {
                             btnAdd={btnAdd}
                             listName={datas}
                             username={JSON.parse(session).username}
+                            onGroupAdded={handleGroupAdded}
                         />
                         <section id='sectionGroup'>
-                            {/* Si aucun groupe n'est connecté on affiche le message "Vous n'avez aucun groupe connecté" */}
-                            {datas.length === 0 && (
+                            {datas && datas.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center">
                                     <p className="text-2xl">Vous n'avez aucun groupe connecté</p>
                                 </div>
+                            ) : (
+                                datas && datas.map((data) => (
+                                    <GroupCard key={data.id} group={data} />
+                                ))
                             )}
-                            {/* Si des groupes existent faire un map */}
-                            {datas.map((data) => (
-                                <GroupCard key={data.id} group={data} />
-                            ))}
-                            
                         </section>
                     </div>
                 </section>
@@ -104,15 +104,15 @@ export default function HomeConect() {
                         <div id="listUl" className="flex flex-col lg:flex-row gap-10">
                             <ul className="leading-10">
                                 <li className="text-xl">Navigation</li>
-                                <li><Link href="#">À propos de nous</Link></li>
-                                <li><Link href="#">FAQ</Link></li>
-                                <li><Link href="#">Contact</Link></li>
+                                <li><Link to="#">À propos de nous</Link></li>
+                                <li><Link to="#">FAQ</Link></li>
+                                <li><Link to="#">Contact</Link></li>
                             </ul>
                             <ul className="leading-10">
                                 <li className="text-xl">Politique</li>
-                                <li><Link href="utilisation.html">Condition d'utilisation</Link></li>
-                                <li><Link href="#">Politique de confidentialité</Link></li>
-                                <li><Link href="mentions.html">Mentions légales</Link></li>
+                                <li><Link to="utilisation.html">Condition d'utilisation</Link></li>
+                                <li><Link to="#">Politique de confidentialité</Link></li>
+                                <li><Link to="mentions.html">Mentions légales</Link></li>
                             </ul>
                         </div>
                     </div>

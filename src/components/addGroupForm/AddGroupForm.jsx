@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-export default function AddGroupForm() {
+export default function AddGroupForm(onGroupAdded) {
     const [groupName, setGroupName] = useState("");
     const [createGroupPass, setCreateGroupPass] = useState("");
     const [confirmGroupPass, setConfirmGroupPass] = useState("");
     const [error, setError] = useState("");
+    console.log(onGroupAdded)
 
     // Récupérer l'id dans la session
     const user = sessionStorage.getItem("user");
@@ -30,6 +31,9 @@ export default function AddGroupForm() {
             });
             const data = await response.json();
             console.log(data);
+            if(response.ok){
+                await onGroupAdded();
+            }
         } catch (error) {
             console.error(error);
         }
