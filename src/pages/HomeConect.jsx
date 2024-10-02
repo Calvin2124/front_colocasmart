@@ -4,6 +4,7 @@ import '../styles/homeConnected.scss';
 import GroupCard from '../components/groupCard/GroupeCard';
 import Sidebar from '../components/sidebar/Sidebar';
 import { useEffect, useState } from 'react';
+import { post } from '../services/ApiService';
 
 export default function HomeConect() {
     const session = sessionStorage.getItem('user');
@@ -20,22 +21,10 @@ export default function HomeConect() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/home/connected', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionToken.token}`,
-                    },
-                    body: JSON.stringify({
-                        id: sessionToken.id,
-                    }),
-                });
+                const result = await post('/home/connected', {
+                    id: sessionToken.id,
+                }, sessionToken.token);
                 
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP : ${response.status}`); // Gérer les erreurs de réponse
-                }
-                
-                const result = await response.json();
                 setDatas(result); // Stockez les données si la réponse est positive
                 setLoading(false); // Arrêtez le chargement
             } catch (error) {
