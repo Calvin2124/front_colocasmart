@@ -6,6 +6,7 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 import loginImg from '../assets/img/login.webp'
 import HeaderGreen from '../components/headerGreen/HeaderGreen';
+import { post } from '../ApiService';
 
 export default function Register() {
     const [email, setEmail] = useState('');
@@ -15,25 +16,19 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            const res = await fetch('http://localhost:3000/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            });
-            const req = await res.json();
-            if (req.message === true) {
+            const data = await post('auth/login', {
+                email,
+                password,
+                });
+                console.log(data);
+            if (data.message === true) {
                 const userParam = {
-                    id: req.idUser,
-                    username: req.username,
-                    token: req.token,
+                    id: data.idUser,
+                    username: data.username,
+                    token: data.token,
                 };
                 sessionStorage.setItem('user', JSON.stringify(userParam));
-                window.location.href = '/connected';
+                // window.location.href = '/connected';
                 setError('');
             } else {
                 setError('Email or password incorrect');
