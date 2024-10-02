@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AddGroupForm() {
+export default function AddGroupForm({ onGroupCreated }) {
     const [groupName, setGroupName] = useState("");
     const [createGroupPass, setCreateGroupPass] = useState("");
     const [confirmGroupPass, setConfirmGroupPass] = useState("");
@@ -30,6 +30,9 @@ export default function AddGroupForm() {
             });
             const data = await response.json();
             console.log(data);
+            if (onGroupCreated) {
+                onGroupCreated();
+            }
         } catch (error) {
             console.error(error);
         }

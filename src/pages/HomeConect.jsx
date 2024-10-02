@@ -17,36 +17,40 @@ export default function HomeConect() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/api/home/connected', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionToken.token}`,
-                    },
-                    body: JSON.stringify({
-                        id: sessionToken.id,
-                    }),
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP : ${response.status}`); // Gérer les erreurs de réponse
-                }
-                
-                const result = await response.json();
-                setDatas(result); // Stockez les données si la réponse est positive
-                setLoading(false); // Arrêtez le chargement
-            } catch (error) {
-                console.error(error);
-                setError('Une erreur est survenue lors de la récupération des données.'); // Message d'erreur générique
-                setLoading(false); // Arrêtez le chargement
+    const fetchData = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/home/connected', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionToken.token}`,
+                },
+                body: JSON.stringify({
+                    id: sessionToken.id,
+                }),
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`); // Gérer les erreurs de réponse
             }
-        };
+            
+            const result = await response.json();
+            setDatas(result); // Stockez les données si la réponse est positive
+            setLoading(false); // Arrêtez le chargement
+        } catch (error) {
+            console.error(error);
+            setError('Une erreur est survenue lors de la récupération des données.'); // Message d'erreur générique
+            setLoading(false); // Arrêtez le chargement
+        }
+    };
 
+    useEffect(() => {
         fetchData(); // Appel de la fonction pour récupérer les données
     }, []);
+
+    const handleGroupCreated = () => {
+        fetchData(); // Re-fetch the group data when a new group is created
+    };
 
     // Affichage conditionnel en fonction des états
     if (loading) {
@@ -80,6 +84,7 @@ export default function HomeConect() {
                             btnAdd={btnAdd}
                             listName={datas}
                             username={JSON.parse(session).username}
+                            onGroupCreated={handleGroupCreated}
                         />
                         <section id='sectionGroup'>
                             {/* Si aucun groupe n'est connecté on affiche le message "Vous n'avez aucun groupe connecté" */}
