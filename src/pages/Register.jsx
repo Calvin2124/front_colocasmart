@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 import registerImg from '../assets/img/register.webp'
 import HeaderGreen from '../components/headerGreen/HeaderGreen';
+import { post } from '../ApiService';
 
 export default function Register() {
     const [username, setUserName] = useState('');
@@ -19,39 +20,31 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(username, email, password_hash, confirmPassword);
         if (password_hash !== confirmPassword) {
             setPassError('Passwords do not match');
-        } else {
-            setPassError('');
-            try {
-                console.log(username, email, password_hash);
-                setError('');
-                const response = await fetch('http://localhost:3000/api/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        username,
-                        email,
-                        password_hash,
-                    }),
-                });
-                const data = await response.json();
-                console.log(data);
-                // Si le mail exist deja dans la base de données
-                if (data.message === true) {
-                    setMailError('User already exist');
-                } else {
-                    // Si le mail n'exist pas dans la base de données
-                    setMailError('');
-                    window.location.href = '/login';
-                }
-            
-            } catch (error) {
-                console.error(error);
+            return 
+        }
+        setPassError('');
+        try {
+            setError('');
+            const data = await post('auth/register', {
+                username,
+                email,
+                password_hash,
+            });
+            console.log(data);
+            // Si le mail exist deja dans la base de données
+            if (data.message === true) {
+                setMailError('User already exist');
+                return
             }
+            // Si le mail n'exist pas dans la base de données
+            setMailError('');
+            // Redirection vers login avec useNavigate
+            window.location.href = '/login';
+        
+        } catch (error) {
+            console.error(error);
         }
     };
     return (
