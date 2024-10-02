@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { post } from "../../services/ApiService";
 import './contact.scss';
-
 
 export default function Contact() {
     const [username, setUsername] = useState('');
@@ -24,13 +24,7 @@ export default function Contact() {
                 }]
             };
             try {
-                const response = await fetch('https://discord.com/api/webhooks/1288044432171728937/qZBU371r6Ydsw6fFvblgrIrsCAuLcmfKtoC9mK1d8iIHcAxGzc-oIU30QZ56hXnT6WEz', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
+                const response = await post('https://discord.com/api/webhooks/1288044432171728937/qZBU371r6Ydsw6fFvblgrIrsCAuLcmfKtoC9mK1d8iIHcAxGzc-oIU30QZ56hXnT6WEz', data);
         
                 if (response.ok) {
                     console.log("Message envoyé avec succès !");

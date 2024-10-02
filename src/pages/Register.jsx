@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 import registerImg from '../assets/img/register.webp'
 import HeaderGreen from '../components/headerGreen/HeaderGreen';
+import { post } from '../services/ApiService';
 
 export default function Register() {
     const [username, setUserName] = useState('');
@@ -27,18 +28,11 @@ export default function Register() {
             try {
                 console.log(username, email, password_hash);
                 setError('');
-                const response = await fetch('http://localhost:3000/api/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        username,
-                        email,
-                        password_hash,
-                    }),
+                const data = await post('/auth/register', {
+                    username,
+                    email,
+                    password_hash,
                 });
-                const data = await response.json();
                 console.log(data);
                 // Si le mail exist deja dans la base de données
                 if (data.message === true) {
