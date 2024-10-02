@@ -28,7 +28,7 @@ export default function Register() {
                     token: data.token,
                 };
                 sessionStorage.setItem('user', JSON.stringify(userParam));
-                // window.location.href = '/connected';
+                window.location.href = '/connected';
                 setError('');
             } else {
                 setError('Email or password incorrect');

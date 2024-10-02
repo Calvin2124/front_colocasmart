@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { post } from "../../ApiService";
 
-export default function AddGroupForm(onGroupAdded) {
+export default function AddGroupForm() {
     const [groupName, setGroupName] = useState("");
     const [createGroupPass, setCreateGroupPass] = useState("");
     const [confirmGroupPass, setConfirmGroupPass] = useState("");
     const [error, setError] = useState("");
-    console.log(onGroupAdded)
 
     // Récupérer l'id dans la session
     const user = sessionStorage.getItem("user");
@@ -18,22 +18,14 @@ export default function AddGroupForm(onGroupAdded) {
         const user = sessionStorage.getItem("user");
         console.log(groupName, createGroupPass, confirmGroupPass, JSON.parse(user).id);
         try{
-            const response = await fetch('http://localhost:3000/api/group/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: groupName,
-                    password: createGroupPass,
-                    userId: JSON.parse(user).id,
-                }),
+            const data = await post('group/create', {
+                name: groupName,
+                password: createGroupPass,
+                userId: JSON.parse(user).id,
             });
-            const data = await response.json();
             console.log(data);
-            if(response.ok){
-                await onGroupAdded();
-            }
+            console.log(data.message);
+
         } catch (error) {
             console.error(error);
         }
