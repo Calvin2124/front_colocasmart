@@ -16,7 +16,7 @@ export default function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/forgot' element={<ForgotPass />} />
         <Route path='/connected' element={<HomeConect />} />
-        <Route path='/homegroup' element={<HomeGroup />} />
+        <Route path='/homegroup/:groupId' element={<HomeGroup />} />
         <Route path='/userprofil' element={<UserProfil />} />
       </Routes>
     </Router>

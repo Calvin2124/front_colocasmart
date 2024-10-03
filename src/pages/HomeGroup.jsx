@@ -4,6 +4,9 @@ import Sidebar from "../components/sidebar/Sidebar";
 import TaskComponent from "../components/taskComponent/TaskComponent";
 
 export default function HomeGroup(){
+    //Récupérer l'id dans l'url 
+    const id = window.location.pathname.split('/')[2];
+    console.log(id);
     const title = 'Task';
     const listName = ['task1', 'task2', 'task3', 'task4'];
     const btnAdd = 'Add';
