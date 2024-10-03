@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { post } from "../../ApiService";
 
-export default function  JoinGroupForm(){
+export default function  JoinGroupForm(onGroupAdded){
     const [groupName, setGroupName] = useState("");
     const [groupPass, setGroupPass] = useState("");
     const [error, setError] = useState("");
@@ -11,22 +12,35 @@ export default function  JoinGroupForm(){
         const user = sessionStorage.getItem("user");
         console.log(groupName, groupPass, JSON.parse(user).id);
         try{
-            const response = await fetch('http://localhost:3000/api/group/join', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: JSON.parse(user).id,
-                    groupName: groupName,
-                    password: groupPass,
-                }),
+            // const response = await fetch('http://localhost:3000/api/group/join', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //         userId: JSON.parse(user).id,
+            //         groupName: groupName,
+            //         password: groupPass,
+            //     }),
+            // });
+            // if(!response.ok){
+            //     throw new Error(`Erreur HTTP : ${response.status}`); // Gérer les erreurs de réponse
+            // }
+            // const data = await response.json();
+            // console.log(data);
+            const data = await post('group/join', {
+                userId: JSON.parse(user).id,
+                groupName: groupName,
+                password: groupPass,
             });
-            if(!response.ok){
-                throw new Error(`Erreur HTTP : ${response.status}`); // Gérer les erreurs de réponse
-            }
-            const data = await response.json();
             console.log(data);
+            if(data){
+                setGroupName("");
+                setGroupPass("");
+                setError("");
+                console.log('group join');
+                onGroupAdded(); // Informer le composant parent que le groupe a été rejoint
+            }
         } catch (error) {
             console.error(error);
         }

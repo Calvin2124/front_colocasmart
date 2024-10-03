@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import GroupList from "../groupList/GroupList";
 import './sidebar.scss';
 
-export default function Sidebar({title, btnAdd, listName, username}) {
+export default function Sidebar({title, btnAdd, listName, username, onGroupAdded}) {
     const titleSidebar = title;
     const btnSidebar = btnAdd;
     const handleClick = (e) => {
@@ -26,6 +26,7 @@ export default function Sidebar({title, btnAdd, listName, username}) {
                 title={titleSidebar}
                 bouton={btnSidebar}
                 listName={listName}
+                onGroupAdded={onGroupAdded}
             />
             <hr/>
             {titleSidebar.toLowerCase() === 'groupe' && (

@@ -3,7 +3,7 @@ import './groupList.scss';
 import { useState } from "react";
 import ModalGroup from "../modalGroup/ModalGroup";
 
-export default function GroupList({ title, bouton, listName}) {
+export default function GroupList({ title, bouton, listName, onGroupAdded}) {
     const [isOpen, setIsOpen] = useState(false);
     const datas = listName;
     return (
@@ -18,7 +18,7 @@ export default function GroupList({ title, bouton, listName}) {
                         </Link>
                     </li>
                 ))}
-                    <ModalGroup isOpen={isOpen} setIsOpen={setIsOpen} bouton={bouton} title={title}/>
+                    <ModalGroup isOpen={isOpen} setIsOpen={setIsOpen} bouton={bouton} title={title} onGroupAdded={onGroupAdded}/>
             </ul>
             
         </div>
