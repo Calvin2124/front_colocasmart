@@ -4,9 +4,13 @@ import { useState } from "react";
 import logoGreen from '../../assets/img/ColocaSmartGreen.webp';
 import '../header/header.scss';
 
-export default function Header() {
+export default function Header(isConnected, userConnected) {
 const [isMenuOpen, setIsMenuOpen] = useState(false);
-const [connected, setConnected] = useState(false);
+
+    const handleClick = () => {
+        sessionStorage.clear();
+        userConnected();
+    };
 
 return (
     <>
@@ -23,9 +27,10 @@ return (
             <li><Link className="cursor-pointer" to="">A propos</Link></li>
             <li><Link className="cursor-pointer" to="/">Contact</Link></li>
             {
-                connected ? (
+                isConnected.isConnected === true ? (
                     <>
-                    <li><Link className="btnConnected cursor-pointer" to="/">Déconnexion</Link></li>
+                    <li><Link className="btnRegister cursor-pointer" to="/connected">Groupes</Link></li>
+                    <li><Link className="btnConnected cursor-pointer" onClick={handleClick}>Déconnexion</Link></li>
                     </>
                 ) : (
                     <>
@@ -51,8 +56,17 @@ return (
             <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Accueil</Link></li>
             <li><Link to="" onClick={() => setIsMenuOpen(false)}>A propos</Link></li>
             <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
-            <li><Link className="btnLogin" to="/login" onClick={() => setIsMenuOpen(false)}>Se connecter</Link></li>
-            <li><Link className="btnRegister" to="/register" onClick={() => setIsMenuOpen(false)}>S'inscrire</Link></li>
+            {isConnected.isConnected === true ? (
+                <>
+                <li><Link className="btnRegister cursor-pointer" to="/connected">Groupes</Link></li>
+                <li><Link className="btnConnected cursor-pointer" onClick={handleClick}>Déconnexion</Link></li>
+                </>
+            ) : (
+                <>
+                <li><Link className="btnLogin" to="/login" onClick={() => setIsMenuOpen(false)}>Se connecter</Link></li>
+                <li><Link className="btnRegister" to="/register" onClick={() => setIsMenuOpen(false)}>S'inscrire</Link></li>
+                </>
+            )}
             </ul>
         </div>
         )}

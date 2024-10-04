@@ -20,7 +20,7 @@ export default function Register() {
                 email,
                 password,
                 });
-                console.log(data);
+                const res = data.message;
             if (data.message === true) {
                 const userParam = {
                     id: data.idUser,
@@ -29,12 +29,11 @@ export default function Register() {
                 };
                 sessionStorage.setItem('user', JSON.stringify(userParam));
                 window.location.href = '/connected';
-                setError('');
-            } else {
-                setError('Email or password incorrect');
+                return;
             }
         } catch (error) {
             console.error(error);
+            setError("Mail ou mot de passe incorrect");
         }
     };
     return (

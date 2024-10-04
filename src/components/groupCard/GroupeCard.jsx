@@ -3,7 +3,6 @@ import { Users } from "lucide-react";
 import './groupCard.scss';
 
 export default function GroupCard({ group }) {
-    console.log(group);
     const navigate = useNavigate(); // Initialisation de useNavigate
 
     const handleEnterClick = () => {

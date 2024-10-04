@@ -29,10 +29,11 @@ export { post };
 async function get(endpoint, token = null){
     const headers = {
         'Content-Type': 'application/json',
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        }
     };
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
     const response = await fetch(`${local}/${endpoint}`, {
         method: 'GET',
         headers,

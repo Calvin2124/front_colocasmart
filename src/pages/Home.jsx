@@ -5,11 +5,31 @@ import contactHome from '../assets/img/contactHome.webp';
 import '../main.scss';
 import { ChartPieIcon, ListTodo, LockKeyhole, UsersRound } from 'lucide-react';
 import Contact from '../components/contact/Contact';
+import { useState } from 'react';
+import { post } from '../ApiService';
 
 export default function Home() {
+    const [isConnected, setIsConnected] = useState(false);
+    const userToken = JSON.parse(sessionStorage.getItem('user'));
+
+    // Envoyer une requete avec le token de l'utilisateur dans le header de la requete pour vérifier si l'utilisateur est connecté et console log la reponse 
+    const userConnected = async () => {
+        try{
+            const res = await post('home/isConnected',{
+                id: userToken.id
+            }, userToken.token);
+            if (res.isConnected === true) {
+                setIsConnected(true);
+            }
+        } catch (error) {
+            console.log('non connecté')
+        }
+    }
+
+    userConnected();
 return (
     <>
-    <Header />
+    <Header isConnected={isConnected} userConnected={userConnected} />
     <main>
         <section id='section1' className='mb-20'>
             <div className="max-w-4xl m-auto flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 h-screen">
