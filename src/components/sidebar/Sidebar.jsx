@@ -6,13 +6,30 @@ import { useState, useEffect } from "react";
 
 export default function Sidebar({ title, btnAdd, listName, username, onGroupAdded }) {
     const [dataGroup, setDataGroup] = useState(null); // Stockage du groupe récupéré
+    const [dataGroupList, setDataGroupList] = useState(null); // Stockage de la liste des groupes de l'utilisateur
     const groupId = window.location.pathname.split('/')[2];
     const titleSidebar = title;
     const btnSidebar = btnAdd;
+    const userSession = sessionStorage.getItem('user');  
+
+
+    // Fnction pour récupérer la liste des groupes de l'utilisateur
+    const fetchGroupList = async () => {
+        try {
+            const data = await post(`group/list`, {
+                id: JSON.parse(userSession).id,
+            });
+            console.log('Les données de la liste des groupes sont :', data);
+            setDataGroupList(data);
+        } catch (error) {
+            console.error("Erreur lors de la récupération de la liste des groupes", error);
+        }
+    };
 
     // Fonction pour récupérer les données du groupe
     const fetchGroupData = async (groupId) => {
         if (titleSidebar.toLowerCase() !== 'groupe') {
+            console.log('mauvais if pour cette page')
             try {
                 const data = await post(`group/${groupId}`, {
                     id: groupId,
@@ -22,6 +39,7 @@ export default function Sidebar({ title, btnAdd, listName, username, onGroupAdde
             } catch (error) {
                 console.error("Erreur lors de la récupération du groupe", error);
             }
+            return
         }
     };
 
@@ -31,6 +49,13 @@ export default function Sidebar({ title, btnAdd, listName, username, onGroupAdde
             fetchGroupData(groupId); // Appelle la fonction quand le component est monté ou quand groupId change
         }
     }, [groupId]); // Dépendance sur groupId
+
+    // Utilisation de useEffect pour éviter la boucle infinie
+    // useEffect(() => {
+    //     if (userSession) {
+    //         fetchGroupList(); // Appelle la fonction quand le component est monté ou quand userSession change
+    //     }
+    // }, [userSession]); // Dépendance sur userSession
 
     const handleDeconnect = (e) => {
         e.preventDefault();

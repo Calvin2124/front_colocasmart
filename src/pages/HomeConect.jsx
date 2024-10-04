@@ -22,7 +22,6 @@ const fetchData = useCallback(async () => {
     const data = await post('home/connected', {
         id: sessionToken.id
     }, sessionToken.token);
-    console.log(data);
     setDatas(data);
     setError(null);
     } catch (error) {
