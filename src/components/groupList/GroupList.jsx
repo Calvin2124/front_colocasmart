@@ -14,7 +14,6 @@ export default function GroupList({ title, bouton, listName = null, onGroupAdded
         try {
             const data = await get(`defaultTags/defaultTags`);
             setTags(data);
-            console.log(data);
         } catch (error) {
             console.error("Erreur lors de la récupération des tags", error);
         }
@@ -42,7 +41,7 @@ export default function GroupList({ title, bouton, listName = null, onGroupAdded
                                     aria-hidden="true"
                                 ></div>
                                 <Link 
-                                    to={`/task/${tag.id}`} 
+                                    to={`/`} onClick={(e) => {e.preventDefault()}}
                                     className="groupLink text-lg hover:underline"
                                 >
                                     {tag.name}
