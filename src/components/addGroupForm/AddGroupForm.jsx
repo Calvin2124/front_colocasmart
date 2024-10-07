@@ -22,7 +22,6 @@ export default function AddGroupForm({ onGroupAdded }) {
                 password: createGroupPass,
                 userId: user.id,
             });
-            console.log(data);
             if (data) {
                 // Groupe créé avec succès
                 setGroupName("");
