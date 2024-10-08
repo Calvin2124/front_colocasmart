@@ -6,6 +6,7 @@ export default function GroupCard({ group }) {
     const navigate = useNavigate(); // Initialisation de useNavigate
 
     const handleEnterClick = () => {
+        localStorage.setItem('groupName', group.name);
         navigate(`/homegroup/${group.id}`); // Redirige vers la page du groupe (exemple d'URL)
     };
 

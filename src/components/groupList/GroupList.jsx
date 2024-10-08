@@ -22,7 +22,8 @@ export default function GroupList({ title, bouton }) {
     }, []); // Dépendances vides pour que cela ne s'exécute qu'une fois au montage
 
     const handleClick = (groupId) => {
-        //chercher un groups qui correspond a l'od 
+        const nameGroup = groups.find(group => group.id === groupId).name;
+        localStorage.setItem('groupName', nameGroup);
         navigate(`/homegroup/${groupId}`);
     };
 

@@ -16,6 +16,8 @@ export default function Sidebar({ title, btnAdd, username }) {
 
     const handleHome = (e) => {
         e.preventDefault();
+        // Supprimer groupName du localstorage 
+        localStorage.clear("groupName")
         navigate("/connected"); // Utilise navigate pour rediriger
     };
 
@@ -27,7 +29,7 @@ export default function Sidebar({ title, btnAdd, username }) {
                     {titleSidebar.toLowerCase() === 'groupe' ? (
                         <h1 className="text-3xl">Bienvenue <br /> <span className="nameUser">{username}</span></h1>
                     ) : (
-                        <h1 className="text-3xl">test</h1>
+                        <h1 className="text-3xl">{localStorage.getItem("groupName")}</h1>
                     )}
                 </div>
                 <hr />
