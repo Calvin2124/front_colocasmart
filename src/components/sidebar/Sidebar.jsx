@@ -3,10 +3,9 @@ import GroupList from "../groupList/GroupList";
 import './sidebar.scss';
 
 export default function Sidebar({ title, btnAdd, username }) {
-    const groupId = window.location.pathname.split('/')[2];
+    // const groupId = window.location.pathname.split('/')[2];
     const titleSidebar = title;
     const btnSidebar = btnAdd;
-
     const navigate = useNavigate();
 
     const handleDeconnect = (e) => {
@@ -28,7 +27,7 @@ export default function Sidebar({ title, btnAdd, username }) {
                     {titleSidebar.toLowerCase() === 'groupe' ? (
                         <h1 className="text-3xl">Bienvenue <br /> <span className="nameUser">{username}</span></h1>
                     ) : (
-                        <h1 className="text-3xl">{title}</h1>
+                        <h1 className="text-3xl">test</h1>
                     )}
                 </div>
                 <hr />

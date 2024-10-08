@@ -5,6 +5,7 @@ import '../styles/homeConnected.scss';
 import GroupCard from '../components/groupCard/GroupeCard';
 import Sidebar from '../components/sidebar/Sidebar';
 import useUserStore from '../Store/userStore';
+import Footer from '../components/footer/Footer';
 
 export default function HomeConnect() {
     const { sessionToken, groups, error, loading, setSessionToken, fetchGroups } = useUserStore();
@@ -65,6 +66,7 @@ export default function HomeConnect() {
                 </div>
             </section>
         </main>
+        <Footer />
         </>
     );
 }
