@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { post } from "../../ApiService";
 
-export default function AddGroupForm({ onGroupAdded }) {
+export default function AddGroupForm({  }) {
     const [groupName, setGroupName] = useState("");
     const [createGroupPass, setCreateGroupPass] = useState("");
     const [confirmGroupPass, setConfirmGroupPass] = useState("");
@@ -28,7 +28,6 @@ export default function AddGroupForm({ onGroupAdded }) {
                 setCreateGroupPass("");
                 setConfirmGroupPass("");
                 setError("");
-                onGroupAdded(); // Informer le composant parent que le groupe a été créé
                 return
             }
             setError("setError if (data)");

@@ -6,7 +6,7 @@ import AddGroupForm from '../addGroupForm/AddGroupForm';
 import JoinGroupForm from '../joinGroupForm/JoinGroupForm';
 import './modalgroup.scss';
 
-export default function EnhancedModal({ bouton, title, onGroupAdded}) {
+export default function EnhancedModal({ bouton, title}) {
 const [modalState, setModalState] = useState({
     isOpen: false,
     gridTemplate: '50% 50%',
@@ -113,7 +113,7 @@ const renderGroupModal = () => (
                     Ajouter un groupe
                 </Link>
                 ) : (
-                <AddGroupForm onGroupAdded={onGroupAdded} />
+                <AddGroupForm />
                 )}
             </div>
             <div 
@@ -135,7 +135,7 @@ const renderGroupModal = () => (
                     Rejoindre un groupe
                 </Link>
                 ) : (
-                <JoinGroupForm onGroupAdded={onGroupAdded}/>
+                <JoinGroupForm />
                 )}
             </div>
             </div>

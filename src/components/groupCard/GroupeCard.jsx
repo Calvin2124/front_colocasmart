@@ -11,7 +11,7 @@ export default function GroupCard({ group }) {
 
     return (
         <>
-            <article className="articleGroup flex flex-col gap-5 p-5">
+            <article className="articleGroup flex flex-col gap-5 p-5 h-fit">
                 <div className="numberUser flex justify-end items-center">
                     <p>+4</p>
                     <Users />

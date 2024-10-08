@@ -4,10 +4,11 @@ import './sidebar.scss';
 import { post } from "../../ApiService";
 import { useState, useEffect } from "react";
 
-export default function Sidebar({ title, btnAdd, listName, username, onGroupAdded }) {
+export default function Sidebar({ title, btnAdd, listName, username }) {
     const [dataGroup, setDataGroup] = useState(null); // Stockage du groupe récupéré
     const groupId = window.location.pathname.split('/')[2];
     const titleSidebar = title;
+    console.log(titleSidebar);
     const btnSidebar = btnAdd;
 
     // Fonction pour récupérer les données du groupe
@@ -60,7 +61,6 @@ export default function Sidebar({ title, btnAdd, listName, username, onGroupAdde
                     title={titleSidebar}
                     bouton={btnSidebar}
                     listName={listName}
-                    onGroupAdded={onGroupAdded}
                 />
                 <hr />
                 {titleSidebar.toLowerCase() === 'groupe' && (

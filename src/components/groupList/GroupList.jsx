@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ModalGroup from "../modalGroup/ModalGroup";
 import useTagStore from "../../Store/userTagStore";  // Importez le store
 
-export default function GroupList({ title, bouton, listName = null, onGroupAdded }) {
+export default function GroupList({ title, bouton, listName = null }) {
     const [isOpen, setIsOpen] = useState(false);
     const { tags, fetchTags } = useTagStore();  // Utilisez le store
     const datas = listName;
@@ -61,8 +61,7 @@ export default function GroupList({ title, bouton, listName = null, onGroupAdded
                     isOpen={isOpen} 
                     setIsOpen={setIsOpen} 
                     bouton={bouton} 
-                    title={title} 
-                    onGroupAdded={onGroupAdded}
+                    title={title}
                 />
             )}
         </div>

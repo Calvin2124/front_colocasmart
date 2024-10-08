@@ -7,7 +7,6 @@ const useTagStore = create((set) => ({
     try {
         const data = await get(`defaultTags/defaultTags`);
         set({ tags: data });
-        console.log(data)
         } catch (error) {
         console.error("Erreur lors de la récupération des tags", error);
         }

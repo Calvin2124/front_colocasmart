@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { post } from "../../ApiService";
 
-export default function JoinGroupForm({ onGroupAdded, onClose }) {
+export default function JoinGroupForm({ onClose }) {
     const [groupName, setGroupName] = useState("");
     const [groupPass, setGroupPass] = useState("");
     const [error, setError] = useState("");
@@ -25,9 +25,6 @@ export default function JoinGroupForm({ onGroupAdded, onClose }) {
                 setGroupName("");
                 setGroupPass("");
                 console.log('group joined');
-                if (typeof onGroupAdded === 'function') {
-                    onGroupAdded(); // Informer le composant parent que le groupe a été rejoint
-                }
                 if (typeof onClose === 'function') {
                     onClose(); // Fermer la modal si nécessaire
                 }
