@@ -2,26 +2,17 @@ import { Link, useNavigate } from "react-router-dom";
 import './groupList.scss';
 import { useState, useEffect } from "react";
 import ModalGroup from "../modalGroup/ModalGroup";
-import { get } from "../../ApiService";
+import useTagStore from "../../Store/userTagStore";  // Importez le store
 
 export default function GroupList({ title, bouton, listName = null, onGroupAdded }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [tags, setTags] = useState([]);
+    const { tags, fetchTags } = useTagStore();  // Utilisez le store
     const datas = listName;
     const navigate = useNavigate();
 
-    const fetchTags = async () => {
-        try {
-            const data = await get(`defaultTags/defaultTags`);
-            setTags(data);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des tags", error);
-        }
-    };
-
     useEffect(() => {
-        fetchTags();
-    }, []);
+        fetchTags();  // Appelez fetchTags du store
+    }, [fetchTags]);
 
     const handleClick = (data) => {
         navigate(`/homegroup/${data}`);
