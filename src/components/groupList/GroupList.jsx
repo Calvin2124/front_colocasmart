@@ -2,61 +2,74 @@ import { Link, useNavigate } from "react-router-dom";
 import './groupList.scss';
 import { useState, useEffect } from "react";
 import ModalGroup from "../modalGroup/ModalGroup";
-import useTagStore from "../../Store/userTagStore";  // Importez le store
+import useTagStore from "../../Store/userTagStore";
+import useUserStore from "../../Store/userStore";
 
-export default function GroupList({ title, bouton, listName = null }) {
+export default function GroupList({ title, bouton }) {
     const [isOpen, setIsOpen] = useState(false);
-    const { tags, fetchTags } = useTagStore();  // Utilisez le store
-    const datas = listName;
+    const { tags, fetchTags, loading: tagsLoading, error: tagsError } = useTagStore();
+    const { groups, fetchGroups, loading: groupsLoading, error: groupsError } = useUserStore();
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchTags();  // Appelez fetchTags du store
-    }, [fetchTags]);
+        // Vérifiez si les données sont déjà chargées pour éviter des appels inutiles
+        if (groups.length === 0) {
+            fetchGroups();
+        }
+        if (tags.length === 0) {
+            fetchTags();
+        }
+    }, []); // Dépendances vides pour que cela ne s'exécute qu'une fois au montage
 
-    const handleClick = (data) => {
-        navigate(`/homegroup/${data}`);
+    const handleClick = (groupId) => {
+        navigate(`/homegroup/${groupId}`);
     };
+
+    if (tagsLoading || groupsLoading) {
+        return <div>Chargement...</div>;
+    }
+
+    if (tagsError || groupsError) {
+        return <div>Une erreur est survenue lors du chargement des données.</div>;
+    }
+
+    const isGroupList = title.toLowerCase() === 'groupe';
 
     return (
         <div className="groupAside">
             <h2 className="text-4xl mb-5">{title}</h2>
             <ul className="space-y-2">
-                {title.toLowerCase() === 'task' && (
-                    <>
-                        {tags.map((tag) => (
-                            <li key={tag.id} className="flex items-center gap-2">
-                                <div 
-                                    className="w-4 h-4 rounded-full" 
-                                    style={{ backgroundColor: tag.color }}
-                                    aria-hidden="true"
-                                ></div>
-                                <Link 
-                                    to={`/`} onClick={(e) => {e.preventDefault()}}
-                                    className="groupLink text-lg hover:underline"
-                                >
-                                    {tag.name}
-                                </Link>
-                            </li>
-                        ))}
-                    </>
-                )}
-                {title.toLowerCase() === 'groupe' && (
-                    <>
-                        {datas.map((data) => (
-                            <li key={data.id}>
-                                <button
-                                    onClick={() => handleClick(data.id)}
-                                    className="groupLink text-lg hover:underline"
-                                >
-                                    {data.name}
-                                </button>
-                            </li>
-                        ))}
-                    </>
+                {!isGroupList ? (
+                    (tags || []).map((tag) => (
+                        <li key={tag.id} className="flex items-center gap-2">
+                            <div 
+                                className="w-4 h-4 rounded-full" 
+                                style={{ backgroundColor: tag.color }}
+                                aria-hidden="true"
+                            ></div>
+                            <Link 
+                                to="/" 
+                                onClick={(e) => e.preventDefault()}
+                                className="groupLink text-lg hover:underline"
+                            >
+                                {tag.name}
+                            </Link>
+                        </li>
+                    ))
+                ) : (
+                    (groups || []).map((group) => (
+                        <li key={group.id}>
+                            <button
+                                onClick={() => handleClick(group.id)}
+                                className="groupLink text-lg hover:underline"
+                            >
+                                {group.name}
+                            </button>
+                        </li>
+                    ))
                 )}
             </ul>
-            {title.toLowerCase() === 'groupe' && (
+            {isGroupList && (
                 <ModalGroup 
                     isOpen={isOpen} 
                     setIsOpen={setIsOpen} 

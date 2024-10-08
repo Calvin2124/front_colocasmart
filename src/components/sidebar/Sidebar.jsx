@@ -1,48 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GroupList from "../groupList/GroupList";
 import './sidebar.scss';
-import { post } from "../../ApiService";
-import { useState, useEffect } from "react";
 
-export default function Sidebar({ title, btnAdd, listName, username }) {
-    const [dataGroup, setDataGroup] = useState(null); // Stockage du groupe récupéré
+export default function Sidebar({ title, btnAdd, username }) {
     const groupId = window.location.pathname.split('/')[2];
     const titleSidebar = title;
-    console.log(titleSidebar);
     const btnSidebar = btnAdd;
 
-    // Fonction pour récupérer les données du groupe
-    const fetchGroupData = async (groupId) => {
-        if (titleSidebar.toLowerCase() === 'groupe') {
-            try {
-                const data = await post(`group/${groupId}`, {
-                    id: groupId,
-                });
-                setDataGroup(data); // Stocker les données du groupe
-                console.log(data);
-            } catch (error) {
-                console.error("Erreur lors de la récupération du groupe", error);
-            }
-            return
-        }
-    };
-
-    // Utilisation de useEffect pour éviter la boucle infinie
-    useEffect(() => {
-        if (groupId) {
-            fetchGroupData(groupId); // Appelle la fonction quand le component est monté ou quand groupId change
-        }
-    }, [groupId]); // Dépendance sur groupId
+    const navigate = useNavigate();
 
     const handleDeconnect = (e) => {
         e.preventDefault();
         sessionStorage.clear();
-        window.location.replace("/login");
+        navigate("/login"); // Utilise navigate pour rediriger
     };
 
     const handleHome = (e) => {
         e.preventDefault();
-        window.location.replace("/connected");
+        navigate("/connected"); // Utilise navigate pour rediriger
     };
 
     return (
@@ -60,7 +35,6 @@ export default function Sidebar({ title, btnAdd, listName, username }) {
                 <GroupList
                     title={titleSidebar}
                     bouton={btnSidebar}
-                    listName={listName}
                 />
                 <hr />
                 {titleSidebar.toLowerCase() === 'groupe' && (
