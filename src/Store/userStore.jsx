@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { post } from '../ApiService';
 
+// Store pour stocker les groupes de l'utilisateur grace a son jeton
+
 const useUserStore = create((set) => ({
     sessionToken: null,
     groups: null,
