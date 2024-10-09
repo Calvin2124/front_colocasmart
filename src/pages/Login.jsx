@@ -1,5 +1,5 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import logoBlack from '../assets/img/logoBlack.webp';
 import Footer from '../components/footerWhite/Footer';
 import '../styles/registerLogin.scss';
 import { X } from 'lucide-react';
@@ -7,11 +7,13 @@ import { useState } from 'react';
 import loginImg from '../assets/img/login.webp'
 import HeaderGreen from '../components/headerGreen/HeaderGreen';
 import { post } from '../ApiService';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +30,7 @@ export default function Register() {
                     token: data.token,
                 };
                 sessionStorage.setItem('user', JSON.stringify(userParam));
-                window.location.href = '/connected';
+                navigate('/connected');
                 return;
             }
         } catch (error) {
@@ -50,6 +52,9 @@ export default function Register() {
                                 <h2 className='text-4xl'>Se connecter</h2>
                                 <form action="#" onSubmit={handleSubmit}>
                                     {error && <p className='text-red-500'>{error}</p>}
+                                    
+                                    {/* Add label for email input */}
+                                    <label htmlFor="email">Email</label>
                                     <input 
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
@@ -57,7 +62,11 @@ export default function Register() {
                                         id="email" 
                                         name="email" 
                                         placeholder="Email" 
-                                        required/>
+                                        required
+                                    />
+                                    
+                                    {/* Add label for password input */}
+                                    <label htmlFor="password">Password</label>
                                     <input 
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -65,11 +74,13 @@ export default function Register() {
                                         id="password" 
                                         name="password" 
                                         placeholder="Password" 
-                                        required/>
+                                        required
+                                    />
+                                    
                                     <Link className='text-blue-500' to="/forgot">Mot de passe oublié ?</Link>
                                     <p>Vous n'avez pas de compte ? <Link className='text-blue-500' to="/register">S'inscrire</Link></p>
                                     <div>
-                                        <input type="checkbox" id="souvenir" name="souvenir"/>
+                                        <input type="checkbox" id="souvenir" name="souvenir" />
                                         <label htmlFor="souvenir">Se souvenir de moi</label>
                                     </div>
                                     <button className="btnBlue">Log in</button>
