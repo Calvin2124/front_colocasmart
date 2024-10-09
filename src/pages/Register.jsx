@@ -1,13 +1,14 @@
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/footerWhite/Footer';
 import '../styles/registerLogin.scss';
 import { X } from 'lucide-react';
-import { useState } from 'react';
-import registerImg from '../assets/img/register.webp'
+import registerImg from '../assets/img/register.webp';
 import HeaderGreen from '../components/headerGreen/HeaderGreen';
 import { post } from '../ApiService';
 
 export default function Register() {
+    const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
     const [username, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [rgpd, setRgpd] = useState(false);
@@ -16,15 +17,24 @@ export default function Register() {
     const [passError, setPassError] = useState('');
     const [mailError, setMailError] = useState('');
     const [error, setError] = useState('');
-
+    const [loading, setLoading] = useState(false); // État de chargement
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (password_hash !== confirmPassword) {
-            setPassError('Passwords do not match');
-            return 
+
+        if (!rgpd) {
+            setError('Vous devez accepter les conditions générales.');
+            return;
         }
+
+        if (password_hash !== confirmPassword) {
+            setPassError('Les mots de passe ne correspondent pas');
+            return;
+        }
+
         setPassError('');
+        setLoading(true); // Définir l'état de chargement
+
         try {
             setError('');
             const data = await post('auth/register', {
@@ -32,21 +42,25 @@ export default function Register() {
                 email,
                 password_hash,
             });
-            console.log(data);
-            // Si le mail exist deja dans la base de données
+
+            // Vérifiez si l'utilisateur existe déjà
             if (data.message === true) {
-                setMailError('User already exist');
-                return
+                setMailError('L\'utilisateur existe déjà');
+                return;
             }
-            // Si le mail n'exist pas dans la base de données
+
+            // Effacer les erreurs existantes et rediriger
             setMailError('');
-            // Redirection vers login avec useNavigate
-            window.location.href = '/login';
-        
+            navigate('/login'); // Utiliser navigate pour la redirection
+
         } catch (error) {
             console.error(error);
+            setError('Une erreur s\'est produite. Veuillez réessayer.'); // Message d'erreur générique
+        } finally {
+            setLoading(false); // Réinitialiser l'état de chargement
         }
     };
+
     return (
         <>
             <HeaderGreen />
@@ -59,60 +73,70 @@ export default function Register() {
                         <div className='grid grid-cols-1 gap-4 items-center lg:grid-cols-2'>
                             <div className='flex flex-col items-center gap-4'>
                                 <h2 className='text-4xl'>Inscription</h2>
-                            <form 
-                            action="#"
-                            onSubmit={handleSubmit}
-                            >
-                                <input 
-                                    value={username}
-                                    onChange={(e) => setUserName(e.target.value)}
-                                    type="text" 
-                                    id="userName" 
-                                    name="userName" 
-                                    placeholder="Username" 
-                                    required/>
+                                <form action="#" onSubmit={handleSubmit}>
+                                    <input
+                                        value={username}
+                                        onChange={(e) => setUserName(e.target.value)}
+                                        type="text"
+                                        id="userName"
+                                        name="userName"
+                                        placeholder="Nom d'utilisateur"
+                                        required
+                                    />
                                     {mailError && <p className='text-red-500'>{mailError}</p>}
-                                <input 
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    type="email" 
-                                    id="email" 
-                                    name="email" 
-                                    placeholder="Email" 
-                                    required/>
+                                    <input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="Email"
+                                        required
+                                    />
                                     {passError && <p className='text-red-500'>{passError}</p>}
-                                <input 
-                                    value={password_hash}
-                                    onChange={(e) => setPasswordHash(e.target.value)}
-                                    type="password" 
-                                    id="password" 
-                                    name="password" 
-                                    placeholder="Password" 
-                                    required/>
-                                <input 
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    type="password" 
-                                    id="confirmPassword" 
-                                    name="confirmPassword" 
-                                    placeholder="Confirm password" 
-                                    required/>
-                                <p>You already have an account? <Link className='text-blue-500' to="/login">Login</Link></p>
-                                <div>
-                                    <input type="checkbox" id="rgpd" name="rgpd"/>
-                                    <label htmlFor="rgpd">I accept the <Link className='text-blue-500' to="utilisation.html">terms of use</Link> and the <Link className='text-blue-500' to="#">privacy policy</Link></label>
-                                </div>
-                                <button className="btnBlue">Sign up</button>
-                            </form>
+                                    <input
+                                        value={password_hash}
+                                        onChange={(e) => setPasswordHash(e.target.value)}
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Mot de passe"
+                                        required
+                                    />
+                                    <input
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        placeholder="Confirmer le mot de passe"
+                                        required
+                                    />
+                                    <p>Vous avez déjà un compte ? <Link className='text-blue-500' to="/login">Connexion</Link></p>
+                                    <div>
+                                        <input 
+                                            type="checkbox" 
+                                            id="rgpd" 
+                                            name="rgpd" 
+                                            checked={rgpd} 
+                                            onChange={(e) => setRgpd(e.target.checked)} // Gérer l'état de la case à cocher
+                                        />
+                                        <label htmlFor="rgpd">
+                                            J'accepte les <Link className='text-blue-500' to="utilisation.html">conditions d'utilisation</Link> et la <Link className='text-blue-500' to="#">politique de confidentialité</Link>
+                                        </label>
+                                    </div>
+                                    <button className="btnBlue" disabled={loading}> 
+                                        {loading ? 'Inscription en cours...' : "S'inscrire"}
+                                    </button>
+                                    {error && <p className='text-red-500'>{error}</p>} {/* Afficher l'erreur générale */}
+                                </form>
                             </div>
-                            
-                            <img src={registerImg} alt="register" />
+                            <img src={registerImg} alt="Inscription" />
                         </div>
                     </div>
                 </section>
             </main>
-        
             <Footer />
         </>
-    )
+    );
 }
