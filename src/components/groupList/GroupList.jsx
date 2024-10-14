@@ -3,7 +3,7 @@ import './groupList.scss';
 import { useState, useEffect } from "react";
 import ModalGroup from "../modalGroup/ModalGroup";
 import useTagStore from "../../Store/userTagStore";
-import useUserStore from "../../Store/userStore";
+import useUserStore from "../../Store/groupUserStore";
 
 export default function GroupList({ title, bouton }) {
     const [isOpen, setIsOpen] = useState(false);

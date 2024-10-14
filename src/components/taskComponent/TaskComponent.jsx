@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight, CalendarClock, CalendarClockIcon } from "lucide-
 import './taskComponent.scss';
 import { useState } from "react";
 import useTagStore from "../../Store/userTagStore";
+import { post } from "../../ApiService";
 
 export default function TaskComponent(){
     // changer le background-color
@@ -10,15 +11,32 @@ export default function TaskComponent(){
     const [dueDate, setDueDate] = useState("")
     const { tags, fetchTags } = useTagStore();  // Utilisez le store
 
+    const idUser = JSON.parse(sessionStorage.getItem('user')).id;
+    const groupId = JSON.parse(localStorage.getItem('group')).id;
+    console.log("groupId", groupId)
+
     const handleColorChange = (e) => {
         setTagColor(e.target.value)
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("Tâche soumise:", { tagColor, taskText, dueDate })
-        // Ici, vous pouvez ajouter la logique pour traiter la soumission du formulaire
-        // Par exemple, envoyer les données à une API ou les stocker dans un état global
+        console.log("Tâche soumise:", { tagColor, taskText, dueDate, idUser, groupId })
+        try {
+            const sendTask = await post('task/create', {
+                tagColor,
+                taskText,
+                dueDate,
+                idUser,
+                groupId
+            })
+            console.log("Tâche envoyée:", sendTask)
+        }catch (err) {
+            console.error(err)
+        }
+        setTaskText("")
+        setDueDate("")
+        setTagColor("#84C825")
     }
     return(
         <>

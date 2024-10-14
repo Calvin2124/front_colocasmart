@@ -4,7 +4,7 @@ import logoBlack from '../assets/img/logoBlack.webp';
 import '../styles/homeConnected.scss';
 import GroupCard from '../components/groupCard/GroupeCard';
 import Sidebar from '../components/sidebar/Sidebar';
-import useUserStore from '../Store/userStore';
+import useUserStore from '../Store/groupUserStore';
 import Footer from '../components/footer/Footer';
 
 export default function HomeConnect() {
