@@ -1,8 +1,9 @@
-import { ArrowLeft, ArrowRight, CalendarClock, CalendarClockIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import './taskComponent.scss';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useTagStore from "../../Store/userTagStore";
 import { post } from "../../ApiService";
+import io from 'socket.io-client';
 
 export default function TaskComponent() {
     const [tagColor, setTagColor] = useState("#84C825");
@@ -10,10 +11,56 @@ export default function TaskComponent() {
     const [dueDate, setDueDate] = useState("");
     const { tags } = useTagStore();
     const [tasks, setTasks] = useState([]);
-    const [errorMessage, setErrorMessage] = useState(""); // État pour les messages d'erreur
+    const [errorMessage, setErrorMessage] = useState("");
+    const [socket, setSocket] = useState(null);
 
     const idUser = JSON.parse(sessionStorage.getItem('user')).id;
     const groupId = JSON.parse(localStorage.getItem('group')).id;
+
+    const fetchTasks = useCallback(async () => {
+        try {
+            const dataTask = await post("task/list", {
+                idUser,
+                groupId
+            });
+            console.log("Fetched tasks:", dataTask);
+            setTasks(dataTask);
+        } catch (err) {
+            console.error("Error fetching tasks:", err);
+        }
+    }, [idUser, groupId]);
+
+    useEffect(() => {
+        const newSocket = io('http://localhost:3000', {
+            query: { groupId, idUser }
+        });
+        setSocket(newSocket);
+    
+        newSocket.on('connect', () => {
+            console.log('Connected to Socket.IO server');
+            newSocket.emit('joinGroup', groupId);
+        });
+    
+        // Écouter l'événement 'newTask'
+        newSocket.on('newTask', (task) => {
+            console.log("New task received:", task);
+            setTasks(prevTasks => {
+                const taskExists = prevTasks.some(t => t.id === task.id);
+                if (!taskExists) {
+                    return [...prevTasks, task]; // Ajoute la nouvelle tâche
+                }
+                return prevTasks;
+            });
+        });
+    
+        // Récupération des tâches initiales
+        fetchTasks();
+    
+        return () => {
+            newSocket.off('newTask');
+            newSocket.close();
+        };
+    }, [groupId, fetchTasks, idUser]);
 
     const handleColorChange = (e) => {
         setTagColor(e.target.value);
@@ -21,17 +68,14 @@ export default function TaskComponent() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrorMessage(""); // Réinitialiser le message d'erreur
+        setErrorMessage("");
 
-        // Validation des entrées
         if (!taskText.trim()) {
             setErrorMessage("Le texte de la tâche ne peut pas être vide.");
             return;
         }
 
-        // Expression régulière pour valider le texte de la tâche
-        const taskTextRegex = /^[a-zA-Z0-9À-ÿ\s.,;!?'-]*$/; // Permet uniquement des lettres, chiffres et quelques ponctuations
-
+        const taskTextRegex = /^[a-zA-Z0-9À-ÿ\s.,;!?'-]*$/;
         if (!taskTextRegex.test(taskText)) {
             setErrorMessage("Le texte de la tâche contient des caractères non autorisés.");
             return;
@@ -42,10 +86,9 @@ export default function TaskComponent() {
             return;
         }
 
-        // Vérifier que la date n'est pas antérieure à la date actuelle
         const selectedDate = new Date(dueDate);
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Réinitialiser les heures pour comparer uniquement les dates
+        today.setHours(0, 0, 0, 0);
 
         if (selectedDate < today) {
             setErrorMessage("La date d'échéance ne peut pas être antérieure à la date actuelle.");
@@ -60,35 +103,18 @@ export default function TaskComponent() {
                 idUser,
                 groupId
             });
-            console.log(newTask);
-            setTasks(prevTasks => [...prevTasks, newTask]); // Ajouter la nouvelle tâche à la liste des tâches
-            // Réinitialiser les champs après l'envoi
+            console.log("New task created:", newTask);
+            
+            // Ne pas mettre à jour l'état local ici, la mise à jour se fera via Socket.IO
+            
             setTaskText("");
             setDueDate("");
             setTagColor("#84C825");
         } catch (err) {
-            console.error(err);
-            setErrorMessage("Une erreur est survenue lors de la création de la tâche."); // Gestion des erreurs d'API
+            console.error("Error creating task:", err);
+            setErrorMessage("Une erreur est survenue lors de la création de la tâche.");
         }
     }
-
-    // Récupérer les tâches du groupe
-    const fetchTasks = async () => {
-        try {
-            const dataTask = await post("task/list", {
-                idUser,
-                groupId
-            });
-            console.log(dataTask);
-            setTasks(dataTask);
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    useEffect(() => {
-        fetchTasks();
-    }, [idUser, groupId]);
 
     return (
         <>
@@ -98,7 +124,6 @@ export default function TaskComponent() {
                     <h1>TaskComponent</h1>
                     <ArrowRight />
                 </div>
-                {/* Formulaire pour ajouter une tâche */}
                 <div className="flex flex-col w-full items-center justify-center gap-3 mt-10">
                     <form onSubmit={handleSubmit} className="task-form bg-white p-4 rounded-lg shadow-md w-full">
                         <div className="task-list flex gap-2 items-center mb-4 justify-center">
@@ -122,7 +147,7 @@ export default function TaskComponent() {
                                     className="rounded-md p-2 border border-gray-300"
                                     value={dueDate}
                                     onChange={(e) => setDueDate(e.target.value)}
-                                    min={new Date().toISOString().split("T")[0]} // Date minimale: aujourd'hui
+                                    min={new Date().toISOString().split("T")[0]}
                                 />
                             </div>
                         </div>
@@ -134,7 +159,7 @@ export default function TaskComponent() {
                             onChange={(e) => setTaskText(e.target.value)}
                             required
                         />
-                        {errorMessage && <p className="text-red-500">{errorMessage}</p>} {/* Affichage du message d'erreur */}
+                        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                         <button 
                             type="submit" 
                             className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition-colors"
@@ -153,9 +178,7 @@ export default function TaskComponent() {
                                         <div className="rounded-full w-4 h-4" style={{ backgroundColor: task.tagColor }}></div>
                                         <p>{task.taskText}</p>
                                     </div>
-                                    <label>
-                                        <input type="checkbox" className="checkbox" />
-                                    </label>
+                                    <input type="checkbox" className="checkbox" />
                                 </div>
                             ))
                         )
