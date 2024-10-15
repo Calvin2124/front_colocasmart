@@ -44,7 +44,6 @@ export default function TaskComponent() {
         newSocket.on('newTask', (task) => {
             console.log("New task received:", task);
             setTasks(prevTasks => {
-                // Vérifier si la tâche existe déjà
                 const taskExists = prevTasks.some(t => t.id === task.id);
                 if (!taskExists) {
                     return [...prevTasks, task];
@@ -103,7 +102,9 @@ export default function TaskComponent() {
                 groupId
             });
             console.log("New task created:", newTask);
-            setTasks(prevTasks => [...prevTasks, newTask]);
+            
+            // Ne pas mettre à jour l'état local ici, la mise à jour se fera via Socket.IO
+            
             setTaskText("");
             setDueDate("");
             setTagColor("#84C825");
