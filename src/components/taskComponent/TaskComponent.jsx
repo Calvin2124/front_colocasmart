@@ -35,25 +35,27 @@ export default function TaskComponent() {
             query: { groupId, idUser }
         });
         setSocket(newSocket);
-
+    
         newSocket.on('connect', () => {
             console.log('Connected to Socket.IO server');
             newSocket.emit('joinGroup', groupId);
         });
-
+    
+        // Écouter l'événement 'newTask'
         newSocket.on('newTask', (task) => {
             console.log("New task received:", task);
             setTasks(prevTasks => {
                 const taskExists = prevTasks.some(t => t.id === task.id);
                 if (!taskExists) {
-                    return [...prevTasks, task];
+                    return [...prevTasks, task]; // Ajoute la nouvelle tâche
                 }
                 return prevTasks;
             });
         });
-
+    
+        // Récupération des tâches initiales
         fetchTasks();
-
+    
         return () => {
             newSocket.off('newTask');
             newSocket.close();
