@@ -13,6 +13,7 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -80,7 +81,7 @@ export default function Register() {
                                     <Link className='text-blue-500' to="/forgot">Mot de passe oublié ?</Link>
                                     <p>Vous n'avez pas de compte ? <Link className='text-blue-500' to="/register">S'inscrire</Link></p>
                                     <div>
-                                        <input type="checkbox" id="souvenir" name="souvenir" />
+                                        <input type="checkbox" id="souvenir" name="souvenir" checked={rememberMe} onChange={(e) => setRememberMe( e.target.checked)}/>
                                         <label htmlFor="souvenir">Se souvenir de moi</label>
                                     </div>
                                     <button className="btnBlue">Log in</button>

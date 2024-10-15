@@ -22,11 +22,6 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!rgpd) {
-            setError('Vous devez accepter les conditions générales.');
-            return;
-        }
-
         if (password_hash !== confirmPassword) {
             setPassError('Les mots de passe ne correspondent pas');
             return;
@@ -36,11 +31,20 @@ export default function Register() {
         setLoading(true); // Définir l'état de chargement
 
         try {
+            if (!email.includes('@')) {
+                setMailError('L\'adresse email doit contenir un @');
+                return;
+            }
+            if (rgpd === false) {
+                setError('Vous devez accepter les conditions générales.');
+                return;
+            }
             setError('');
             const data = await post('auth/register', {
                 username,
                 email,
                 password_hash,
+                rgpd
             });
 
             // Vérifiez si l'utilisateur existe déjà
@@ -55,7 +59,7 @@ export default function Register() {
 
         } catch (error) {
             console.error(error);
-            setError('Une erreur s\'est produite. Veuillez réessayer.'); // Message d'erreur générique
+            setError('Mot de passe ou mail incorrect !'); // Message d'erreur générique
         } finally {
             setLoading(false); // Réinitialiser l'état de chargement
         }
