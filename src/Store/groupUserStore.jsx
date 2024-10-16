@@ -9,6 +9,7 @@ const useUserStore = create((set) => ({
     setSessionToken: (token) => set({ sessionToken: token }),
     fetchGroups: async () => {
         const { sessionToken } = useUserStore.getState();
+        console.log(sessionToken);
         if (!sessionToken) return;
 
         set({ loading: true });

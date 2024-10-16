@@ -3,7 +3,6 @@ import GroupList from "../groupList/GroupList";
 import './sidebar.scss';
 
 export default function Sidebar({ title, btnAdd, username }) {
-    // const groupId = window.location.pathname.split('/')[2];
     const titleSidebar = title;
     const btnSidebar = btnAdd;
     const navigate = useNavigate();
@@ -11,6 +10,7 @@ export default function Sidebar({ title, btnAdd, username }) {
     const handleDeconnect = (e) => {
         e.preventDefault();
         sessionStorage.clear();
+        localStorage.clear();
         navigate("/login"); // Utilise navigate pour rediriger
     };
 

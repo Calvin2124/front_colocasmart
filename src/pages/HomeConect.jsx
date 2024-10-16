@@ -11,10 +11,13 @@ export default function HomeConnect() {
     const { sessionToken, groups, error, loading, setSessionToken, fetchGroups } = useUserStore();
 
     useEffect(() => {
-        const session = sessionStorage.getItem('user');
-        const token = JSON.parse(session);
-        setSessionToken(token);
-    }, [setSessionToken]);
+        const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+        if (storedUser) {
+            const userData = JSON.parse(storedUser);
+            console.log(userData);
+            setSessionToken(userData);
+        }
+    }, []);
 
     useEffect(() => {
         if (sessionToken) {

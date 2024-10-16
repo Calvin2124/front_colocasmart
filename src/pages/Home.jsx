@@ -10,7 +10,7 @@ import { post } from '../ApiService';
 
 export default function Home() {
     const [isConnected, setIsConnected] = useState(false);
-    const userToken = JSON.parse(sessionStorage.getItem('user'));
+    const userToken = JSON.parse(sessionStorage.getItem('user')) || JSON.parse(localStorage.getItem('user'));
 
     // Envoyer une requete avec le token de l'utilisateur dans le header de la requete pour vérifier si l'utilisateur est connecté et console log la reponse 
     const userConnected = async () => {
