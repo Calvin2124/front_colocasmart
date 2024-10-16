@@ -15,11 +15,21 @@ export default function HomeGroup(){
     // Fonction pour vérifier si lutilisateur est dans le groupe avec une requete vers le back end
     const checkGroup = async (id) => {
         try {
-            const userId = JSON.parse(sessionStorage.getItem('user')).id;
+            // Vérifiez si l'objet 'user' existe dans le localStorage et sessionStorage
+            const sessionUser = sessionStorage.getItem('user');
+            const localUser = localStorage.getItem('user');
+            
+            if (!sessionUser && !localUser) {
+                throw new Error('User not found in sessionStorage or localStorage');
+            }
+    
+            const userId = sessionUser ? JSON.parse(sessionUser).id : JSON.parse(localUser).id;
+    
             const data = await post(`group/${id}`, {
                 groupId: id,
                 userId: userId,
             });
+    
             setIsVerified(true);
             return data;
         } catch (error) {

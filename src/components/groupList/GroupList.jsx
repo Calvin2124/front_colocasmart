@@ -21,10 +21,10 @@ export default function GroupList({ title, bouton }) {
         }
     }, []); // Dépendances vides pour que cela ne s'exécute qu'une fois au montage
 
-    const handleClick = (groupId) => {
-        const nameGroup = groups.find(group => group.id === groupId).name;
-        localStorage.setItem('groupName', nameGroup);
-        navigate(`/homegroup/${groupId}`);
+    const handleClick = (group) => {
+        console.log('groupId:', group);
+        localStorage.setItem('group', JSON.stringify(group));
+        navigate(`/homegroup/${group.id}`);
     };
 
     if (tagsLoading || groupsLoading) {
@@ -62,7 +62,7 @@ export default function GroupList({ title, bouton }) {
                     (groups || []).map((group) => (
                         <li key={group.id}>
                             <button
-                                onClick={() => handleClick(group.id)}
+                                onClick={() => handleClick(group)}
                                 className="groupLink text-lg hover:underline"
                             >
                                 {group.name}

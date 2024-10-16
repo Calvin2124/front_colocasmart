@@ -14,7 +14,14 @@ export default function TaskComponent() {
     const [errorMessage, setErrorMessage] = useState("");
     const [socket, setSocket] = useState(null);
 
-    const idUser = JSON.parse(sessionStorage.getItem('user')).id;
+    const sessionUser = sessionStorage.getItem('user');
+    const localUser = localStorage.getItem('user');
+    if (!sessionUser && !localUser) {
+        throw new Error('User not found in sessionStorage or localStorage');
+    }
+
+    const idUser = sessionUser ? JSON.parse(sessionUser).id : JSON.parse(localUser).id;
+    console.log("idUser ",idUser);
     const groupId = JSON.parse(localStorage.getItem('group')).id;
 
     const fetchTasks = useCallback(async () => {

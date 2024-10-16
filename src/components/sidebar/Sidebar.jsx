@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import GroupList from "../groupList/GroupList";
 import './sidebar.scss';
+import useUserStore from "../../Store/groupUserStore";
 
 export default function Sidebar({ title, btnAdd, username }) {
     const titleSidebar = title;
@@ -16,8 +17,8 @@ export default function Sidebar({ title, btnAdd, username }) {
 
     const handleHome = (e) => {
         e.preventDefault();
-        // Supprimer groupName du localstorage 
-        localStorage.clear("groupName")
+        // Supprimer group du localstorage 
+        localStorage.removeItem("group");
         navigate("/connected"); // Utilise navigate pour rediriger
     };
 
@@ -29,7 +30,7 @@ export default function Sidebar({ title, btnAdd, username }) {
                     {titleSidebar.toLowerCase() === 'groupe' ? (
                         <h1 className="text-3xl">Bienvenue <br /> <span className="nameUser">{username}</span></h1>
                     ) : (
-                        <h1 className="text-3xl">{localStorage.getItem("groupName")}</h1>
+                        <h1 className="text-3xl">{localStorage.getItem("group").name}</h1>
                     )}
                 </div>
                 <hr />

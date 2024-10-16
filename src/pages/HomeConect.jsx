@@ -4,20 +4,19 @@ import logoBlack from '../assets/img/logoBlack.webp';
 import '../styles/homeConnected.scss';
 import GroupCard from '../components/groupCard/GroupeCard';
 import Sidebar from '../components/sidebar/Sidebar';
-import useUserStore from '../Store/groupUserStore';
+import groupUserStore from '../Store/groupUserStore';
 import Footer from '../components/footer/Footer';
 
 export default function HomeConnect() {
-    const { sessionToken, groups, error, loading, setSessionToken, fetchGroups } = useUserStore();
+    const { sessionToken, groups, error, loading, setSessionToken, fetchGroups } = groupUserStore();
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
         if (storedUser) {
             const userData = JSON.parse(storedUser);
-            console.log(userData);
             setSessionToken(userData);
         }
-    }, []);
+    }, [setSessionToken]);
 
     useEffect(() => {
         if (sessionToken) {
@@ -58,7 +57,7 @@ export default function HomeConnect() {
                     <section id='sectionGroup'>
                         {groups && groups.length === 0 ? (
                             <div className="flex flex-col items-center justify-center">
-                                <p className="text-2xl">Vous n'avez aucun groupe connecté</p>
+                                <p className="text-2xl">Vous n'avez aucun groupe</p>
                             </div>
                         ) : (
                             groups && groups.map((data) => (

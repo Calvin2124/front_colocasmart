@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { post } from "../../ApiService";
+import { useNavigate } from "react-router-dom";
 
 export default function AddGroupForm({  }) {
     const [groupName, setGroupName] = useState("");
@@ -7,6 +8,7 @@ export default function AddGroupForm({  }) {
     const [confirmGroupPass, setConfirmGroupPass] = useState("");
     const [error, setError] = useState("");
     const [isCreating, setIsCreating] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,9 +16,11 @@ export default function AddGroupForm({  }) {
             setError("Les mots de passe ne correspondent pas");
             return;
         }
-        const user = JSON.parse(sessionStorage.getItem("user"));
+        const user = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
         setIsCreating(true);
+        console.log(user);
         try {
+            console.log(groupName, createGroupPass, user.id);
             const data = await post('group/create', {
                 name: groupName,
                 password: createGroupPass,
@@ -24,6 +28,8 @@ export default function AddGroupForm({  }) {
             });
             if (data) {
                 // Groupe créé avec succès
+                localStorage.setItem("group", JSON.stringify(data.group.id));
+                navigate(`/homegroup/${data.group.id}`);
                 setGroupName("");
                 setCreateGroupPass("");
                 setConfirmGroupPass("");
