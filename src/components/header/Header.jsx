@@ -10,6 +10,7 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleClick = () => {
         sessionStorage.clear();
+        localStorage.clear();
         userConnected();
     };
 

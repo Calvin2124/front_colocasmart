@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/footerWhite/Footer';
 import '../styles/registerLogin.scss';
 import { X } from 'lucide-react';
-import { useState } from 'react';
-import loginImg from '../assets/img/login.webp'
+import loginImg from '../assets/img/login.webp';
 import HeaderGreen from '../components/headerGreen/HeaderGreen';
 import { post } from '../ApiService';
 import { useNavigate } from 'react-router-dom';
+import { useUserStore } from '../Store/useUserStore'; // Importation du store Zustand
 
 export default function Register() {
     const [email, setEmail] = useState('');
@@ -15,22 +15,34 @@ export default function Register() {
     const [error, setError] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
+    
+    const setUser = useUserStore((state) => state.setUser); // Utilisation de la fonction setUser du store
+    const loadUser = useUserStore((state) => state.loadUser); // Charger utilisateur depuis le store Zustand
+    
+    // Charger les informations utilisateur depuis sessionStorage ou localStorage à l'initialisation du composant
+    useEffect(() => {
+        loadUser();
+    }, [loadUser]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
+        try {
             const data = await post('auth/login', {
                 email,
                 password,
-                });
-                const res = data.message;
+            });
+            
             if (data.message === true) {
                 const userParam = {
                     id: data.idUser,
                     username: data.username,
                     token: data.token,
                 };
-                sessionStorage.setItem('user', JSON.stringify(userParam));
+
+                // Stocker les informations utilisateur dans Zustand avec "rememberMe"
+                setUser(userParam, rememberMe);
+
+                // Redirection après connexion réussie
                 navigate('/connected');
                 return;
             }
@@ -39,6 +51,7 @@ export default function Register() {
             setError("Mail ou mot de passe incorrect");
         }
     };
+
     return (
         <>
             <HeaderGreen />
@@ -54,7 +67,6 @@ export default function Register() {
                                 <form action="#" onSubmit={handleSubmit}>
                                     {error && <p className='text-red-500'>{error}</p>}
                                     
-                                    {/* Add label for email input */}
                                     <label htmlFor="email">Email</label>
                                     <input 
                                         value={email}
@@ -66,7 +78,6 @@ export default function Register() {
                                         required
                                     />
                                     
-                                    {/* Add label for password input */}
                                     <label htmlFor="password">Password</label>
                                     <input 
                                         value={password}
@@ -81,7 +92,13 @@ export default function Register() {
                                     <Link className='text-blue-500' to="/forgot">Mot de passe oublié ?</Link>
                                     <p>Vous n'avez pas de compte ? <Link className='text-blue-500' to="/register">S'inscrire</Link></p>
                                     <div>
-                                        <input type="checkbox" id="souvenir" name="souvenir" checked={rememberMe} onChange={(e) => setRememberMe( e.target.checked)}/>
+                                        <input 
+                                            type="checkbox" 
+                                            id="souvenir" 
+                                            name="souvenir" 
+                                            checked={rememberMe} 
+                                            onChange={(e) => setRememberMe(e.target.checked)} 
+                                        />
                                         <label htmlFor="souvenir">Se souvenir de moi</label>
                                     </div>
                                     <button className="btnBlue">Log in</button>
@@ -96,5 +113,5 @@ export default function Register() {
         
             <Footer />
         </>
-    )
+    );
 }
