@@ -1,37 +1,52 @@
 import { Link, useNavigate } from "react-router-dom";
 import GroupList from "../groupList/GroupList";
 import './sidebar.scss';
-import useUserStore from "../../Store/groupUserStore";
+import { Settings } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function Sidebar({ title, btnAdd, username }) {
     const titleSidebar = title;
     const btnSidebar = btnAdd;
     const navigate = useNavigate();
+    const [nameGroup, setNameGroup] = useState('');
+
+    // Utilisation de useEffect pour éviter les boucles infinies
+    useEffect(() => {
+        const groupData = localStorage.getItem("group");
+        if (groupData) {
+            const group = JSON.parse(groupData); // On parse les données du localStorage
+            setNameGroup(group.name);
+        }
+    }, []); // Le tableau vide [] signifie que cet effet s'exécutera seulement une fois, lors du montage
+
+    const handleProfil = (e) => {
+        e.preventDefault();
+        navigate("/userprofil");
+    };
 
     const handleDeconnect = (e) => {
         e.preventDefault();
         sessionStorage.clear();
         localStorage.clear();
-        navigate("/login"); // Utilise navigate pour rediriger
+        navigate("/login");
     };
 
     const handleHome = (e) => {
         e.preventDefault();
-        // Supprimer group du localstorage 
         localStorage.removeItem("group");
-        navigate("/connected"); // Utilise navigate pour rediriger
+        navigate("/connected");
     };
 
     return (
         <>
             <aside>
-                <div className="profil">
-                    <div className="round"></div>
+                <div className="profil flex items-center gap-10 relative">
                     {titleSidebar.toLowerCase() === 'groupe' ? (
                         <h1 className="text-3xl">Bienvenue <br /> <span className="nameUser">{username}</span></h1>
                     ) : (
-                        <h1 className="text-3xl">{localStorage.getItem("group").name}</h1>
+                        <h1 className="text-3xl">{nameGroup}</h1>
                     )}
+                    <Settings onClick={handleProfil} className="w-8 h-8" />
                 </div>
                 <hr />
                 <GroupList

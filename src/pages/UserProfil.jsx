@@ -31,7 +31,7 @@ export default function UserProfil() {
                     <Link className="hover:text-purple-600 transition-all flex gap-1 items-center mb-8" onClick={handleClickProfile} to="/"><UserRoundPen /> Mon profil</Link>
                     <Link className="hover:text-purple-600 transition-all flex gap-1 items-center" onClick={handleClickAccount} to="/"><UserRoundCog /> Mon compte</Link>
                     <hr/>
-                    <Link className="disconnect" to="/">Retour</Link>
+                    <Link className="disconnect" to="/connected">Retour</Link>
                 </aside>
                     <section id='sectionGroup'>
                     <FormProfil afficher={afficher} />

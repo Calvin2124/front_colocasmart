@@ -13,6 +13,35 @@ export default function TaskComponent() {
     const [tasks, setTasks] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [socket, setSocket] = useState(null);
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [todayDate, setTodayDate] = useState(new Date());
+
+    // Fonction pour formater une date en chaîne lisible (sans conversion incorrecte)
+    const formatDate = (date) => {
+        return date.toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        });
+    };
+
+    // Fonction pour récupérer le jour précédent
+    const getPreviousDay = () => {
+        const previousDay = new Date(currentDate);
+        previousDay.setDate(previousDay.getDate() - 1);
+        setCurrentDate(previousDay);
+    };
+
+    // Fonction pour récupérer le jour suivant
+    const getNextDay = () => {
+        const nextDay = new Date(currentDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        setCurrentDate(nextDay);
+    };
+
+    useEffect(() => {
+        setTodayDate(new Date()); // Définit la date d'aujourd'hui lors du montage du composant
+    }, []);
 
     const sessionUser = sessionStorage.getItem('user');
     const localUser = localStorage.getItem('user');
@@ -21,7 +50,6 @@ export default function TaskComponent() {
     }
 
     const idUser = sessionUser ? JSON.parse(sessionUser).id : JSON.parse(localUser).id;
-    console.log("idUser ",idUser);
     const groupId = JSON.parse(localStorage.getItem('group')).id;
 
     const fetchTasks = useCallback(async () => {
@@ -127,9 +155,12 @@ export default function TaskComponent() {
         <>
             <div className="flex flex-col justify-center items-center">
                 <div className="text-4xl items-center flex justify-center gap-3">
-                    <ArrowLeft />
-                    <h1>TaskComponent</h1>
-                    <ArrowRight />
+                    <ArrowLeft onClick={getPreviousDay}/>
+                    <h1>{formatDate(currentDate)}</h1>
+                    {/* Affiche le bouton "Jour Suivant" uniquement si la date actuelle n'est pas égale à aujourd'hui */}
+                        {currentDate.toDateString() !== todayDate.toDateString() && (
+                            <ArrowRight onClick={getNextDay}/>
+                    )}
                 </div>
                 <div className="flex flex-col w-full items-center justify-center gap-3 mt-10">
                     <form onSubmit={handleSubmit} className="task-form bg-white p-4 rounded-lg shadow-md w-full">
