@@ -56,14 +56,15 @@ export default function TaskComponent() {
         try {
             const dataTask = await post("task/list", {
                 idUser,
-                groupId
+                groupId,
+                date: currentDate.toISOString().split('T')[0]  // Ajout de la date
             });
             console.log("Fetched tasks:", dataTask);
             setTasks(dataTask);
         } catch (err) {
             console.error("Error fetching tasks:", err);
         }
-    }, [idUser, groupId]);
+    }, [idUser, groupId, currentDate]);
 
     useEffect(() => {
         const newSocket = io('http://localhost:3000', {
@@ -82,20 +83,43 @@ export default function TaskComponent() {
             setTasks(prevTasks => {
                 const taskExists = prevTasks.some(t => t.id === task.id);
                 if (!taskExists) {
-                    return [...prevTasks, task]; // Ajoute la nouvelle tâche
+                    return [...prevTasks, task];
                 }
                 return prevTasks;
             });
         });
     
-        // Récupération des tâches initiales
+        // Ajouter l'écoute des mises à jour de tâches
+        newSocket.on('taskUpdated', ({ taskId, completed }) => {
+            setTasks(prevTasks =>
+                prevTasks.map(task =>
+                    task.id === taskId
+                        ? { ...task, completed }
+                        : task
+                )
+            );
+        });
+    
         fetchTasks();
     
         return () => {
             newSocket.off('newTask');
+            newSocket.off('taskUpdated');
             newSocket.close();
         };
     }, [groupId, fetchTasks, idUser]);
+
+    const handleTaskStatusChange = async (taskId, completed) => {
+        try {
+            await post("task/updateStatus", {
+                taskId,
+                completed,
+                groupId
+            });
+        } catch (err) {
+            console.error("Error updating task status:", err);
+        }
+    };
 
     const handleColorChange = (e) => {
         setTagColor(e.target.value);
@@ -123,7 +147,6 @@ export default function TaskComponent() {
 
         const selectedDate = new Date(dueDate);
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
 
         if (selectedDate < today) {
             setErrorMessage("La date d'échéance ne peut pas être antérieure à la date actuelle.");
@@ -157,10 +180,7 @@ export default function TaskComponent() {
                 <div className="text-4xl items-center flex justify-center gap-3">
                     <ArrowLeft onClick={getPreviousDay}/>
                     <h1>{formatDate(currentDate)}</h1>
-                    {/* Affiche le bouton "Jour Suivant" uniquement si la date actuelle n'est pas égale à aujourd'hui */}
-                        {currentDate.toDateString() !== todayDate.toDateString() && (
-                            <ArrowRight onClick={getNextDay}/>
-                    )}
+                    <ArrowRight onClick={getNextDay}/>
                 </div>
                 <div className="flex flex-col w-full items-center justify-center gap-3 mt-10">
                     <form onSubmit={handleSubmit} className="task-form bg-white p-4 rounded-lg shadow-md w-full">
@@ -216,7 +236,12 @@ export default function TaskComponent() {
                                         <div className="rounded-full w-4 h-4" style={{ backgroundColor: task.tagColor }}></div>
                                         <p>{task.taskText}</p>
                                     </div>
-                                    <input type="checkbox" className="checkbox" />
+                                    <input 
+                                        type="checkbox" 
+                                        className="checkbox" 
+                                        checked={task.completed}
+                                        onChange={() => handleTaskStatusChange(task.id, !task.completed)}
+                                    />
                                 </div>
                             ))
                         )
