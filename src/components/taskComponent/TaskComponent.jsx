@@ -52,14 +52,64 @@ export default function TaskComponent() {
     const idUser = sessionUser ? JSON.parse(sessionUser).id : JSON.parse(localUser).id;
     const groupId = JSON.parse(localStorage.getItem('group')).id;
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setErrorMessage("");
+    
+        if (!taskText.trim()) {
+            setErrorMessage("Le texte de la tâche ne peut pas être vide.");
+            return;
+        }
+    
+        const taskTextRegex = /^[a-zA-Z0-9À-ÿ\s.,;!?'-]*$/;
+        if (!taskTextRegex.test(taskText)) {
+            setErrorMessage("Le texte de la tâche contient des caractères non autorisés.");
+            return;
+        }
+    
+        if (!dueDate) {
+            setErrorMessage("Veuillez sélectionner une date d'échéance.");
+            return;
+        }
+    
+        const selectedDate = new Date(dueDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        selectedDate.setHours(0, 0, 0, 0);
+    
+        if (selectedDate < today) {
+            setErrorMessage("La date d'échéance ne peut pas être antérieure à la date actuelle.");
+            return;
+        }
+    
+        try {
+            const newTask = await post('task/create', {
+                tagColor,
+                taskText,
+                dueDate,   // Vérifiez que vous passez la bonne date
+                idUser,
+                groupId
+            });
+            console.log("New task created:", newTask);
+            
+            setTaskText("");
+            setDueDate("");
+            setTagColor("#84C825");
+        } catch (err) {
+            console.error("Error creating task:", err);
+            setErrorMessage("Une erreur est survenue lors de la création de la tâche.");
+        }
+    }
+
     const fetchTasks = useCallback(async () => {
         try {
+            const formattedDate = currentDate.toISOString().split('T')[0]; // format YYYY-MM-DD
             const dataTask = await post("task/list", {
                 idUser,
                 groupId,
-                date: currentDate.toISOString().split('T')[0]  // Ajout de la date
+                date: formattedDate  // Assurez-vous d'envoyer la date actuelle sélectionnée
             });
-            console.log("Fetched tasks:", dataTask);
+            console.log("Fetched tasks for date:", formattedDate, dataTask);
             setTasks(dataTask);
         } catch (err) {
             console.error("Error fetching tasks:", err);
@@ -125,54 +175,6 @@ export default function TaskComponent() {
         setTagColor(e.target.value);
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setErrorMessage("");
-
-        if (!taskText.trim()) {
-            setErrorMessage("Le texte de la tâche ne peut pas être vide.");
-            return;
-        }
-
-        const taskTextRegex = /^[a-zA-Z0-9À-ÿ\s.,;!?'-]*$/;
-        if (!taskTextRegex.test(taskText)) {
-            setErrorMessage("Le texte de la tâche contient des caractères non autorisés.");
-            return;
-        }
-
-        if (!dueDate) {
-            setErrorMessage("Veuillez sélectionner une date d'échéance.");
-            return;
-        }
-
-        const selectedDate = new Date(dueDate);
-        const today = new Date();
-
-        if (selectedDate < today) {
-            setErrorMessage("La date d'échéance ne peut pas être antérieure à la date actuelle.");
-            return;
-        }
-
-        try {
-            const newTask = await post('task/create', {
-                tagColor,
-                taskText,
-                dueDate,
-                idUser,
-                groupId
-            });
-            console.log("New task created:", newTask);
-            
-            // Ne pas mettre à jour l'état local ici, la mise à jour se fera via Socket.IO
-            
-            setTaskText("");
-            setDueDate("");
-            setTagColor("#84C825");
-        } catch (err) {
-            console.error("Error creating task:", err);
-            setErrorMessage("Une erreur est survenue lors de la création de la tâche.");
-        }
-    }
 
     return (
         <>

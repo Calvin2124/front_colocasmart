@@ -24,16 +24,16 @@ export default function HomeConnect() {
         }
     }, [sessionToken, fetchGroups]);
 
-    if (loading) {
-        return (
-            <div className='loaderCenter'>
-                <div className="loader">
-                    <span className="loader-text">loading</span>
-                    <span className="load"></span>
-                </div>  
-            </div>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <div className='loaderCenter'>
+    //             <div className="loader">
+    //                 <span className="loader-text">loading</span>
+    //                 <span className="load"></span>
+    //             </div>  
+    //         </div>
+    //     );
+    // }
 
     if (error) {
         return <p>{error}</p>;

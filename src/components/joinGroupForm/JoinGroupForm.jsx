@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { post } from "../../ApiService";
+import { useNavigate } from "react-router-dom";
 
 export default function JoinGroupForm({ onClose }) {
     const [groupName, setGroupName] = useState("");
     const [groupPass, setGroupPass] = useState("");
     const [error, setError] = useState("");
     const [isJoining, setIsJoining] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = sessionStorage.getItem("user");
-        console.log(groupName, groupPass, JSON.parse(user).id);
+        const user = sessionStorage.getItem("user") || localStorage.getItem("user");
         setIsJoining(true);
         setError("");
 
@@ -24,11 +25,11 @@ export default function JoinGroupForm({ onClose }) {
             if (data) {
                 setGroupName("");
                 setGroupPass("");
-                console.log('group joined');
                 if (typeof onClose === 'function') {
                     onClose(); // Fermer la modal si nécessaire
                 }
             }
+            navigate("/homegroup/" + data.idGroup);
         } catch (error) {
             console.error(error);
             setError("Impossible de rejoindre le groupe. Veuillez réessayer.");
