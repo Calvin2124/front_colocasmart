@@ -3,11 +3,10 @@ import { LogOut, Users } from "lucide-react";
 import './groupCard.scss';
 import {post} from "../../ApiService";
 
-export default function GroupCard({ group }) {
+export default function GroupCard({ group, fetchGroups }) {
     const navigate = useNavigate(); // Initialisation de useNavigate
     // Récupérer l'id de l'utilisateur dans le locale storage 
     const userId = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
-    console.log(userId.id)
 
     const handleEnterClick = () => {
         const groupData = {
@@ -24,7 +23,7 @@ export default function GroupCard({ group }) {
                 groupId: group.id,
                 userId: userId.id
             });
-            console.log(res)
+            fetchGroups();
         }catch (err){
             console.error(err);
         }

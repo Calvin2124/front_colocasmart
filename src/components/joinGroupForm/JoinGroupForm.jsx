@@ -21,7 +21,6 @@ export default function JoinGroupForm({ onClose }) {
                 groupName: groupName,
                 password: groupPass,
             });
-            console.log(data);
             if (data) {
                 setGroupName("");
                 setGroupPass("");
@@ -29,6 +28,7 @@ export default function JoinGroupForm({ onClose }) {
                     onClose(); // Fermer la modal si nécessaire
                 }
             }
+            localStorage.setItem("group", JSON.stringify({id: data.idGroup, name: data.nameGroup}));
             navigate("/homegroup/" + data.idGroup);
         } catch (error) {
             console.error(error);

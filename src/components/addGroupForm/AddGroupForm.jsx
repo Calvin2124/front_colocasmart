@@ -18,9 +18,7 @@ export default function AddGroupForm({  }) {
         }
         const user = JSON.parse(sessionStorage.getItem("user")) || JSON.parse(localStorage.getItem("user"));
         setIsCreating(true);
-        console.log(user);
         try {
-            console.log(groupName, createGroupPass, user.id);
             const data = await post('group/create', {
                 name: groupName,
                 password: createGroupPass,
@@ -28,7 +26,7 @@ export default function AddGroupForm({  }) {
             });
             if (data) {
                 // Groupe créé avec succès
-                localStorage.setItem("group", JSON.stringify(data.group.id));
+                localStorage.setItem("group", JSON.stringify({id: data.group.id,name: data.group.name}));
                 navigate(`/homegroup/${data.group.id}`);
                 setGroupName("");
                 setCreateGroupPass("");

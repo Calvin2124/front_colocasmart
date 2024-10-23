@@ -109,7 +109,7 @@ export default function TaskComponent() {
                 groupId,
                 date: formattedDate  // Assurez-vous d'envoyer la date actuelle sélectionnée
             });
-            console.log("Fetched tasks for date:", formattedDate, dataTask);
+            // console.log("Fetched tasks for date:", formattedDate, dataTask);
             setTasks(dataTask);
         } catch (err) {
             console.error("Error fetching tasks:", err);
@@ -123,7 +123,7 @@ export default function TaskComponent() {
         setSocket(newSocket);
     
         newSocket.on('connect', () => {
-            console.log('Connected to Socket.IO server');
+            // console.log('Connected to Socket.IO server');
             newSocket.emit('joinGroup', groupId);
         });
     

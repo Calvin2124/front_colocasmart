@@ -61,7 +61,7 @@ export default function HomeConnect() {
                             </div>
                         ) : (
                             groups && groups.map((data) => (
-                                <GroupCard key={data.id} group={data} />
+                                <GroupCard key={data.id} group={data} fetchGroups={fetchGroups} />
                             ))
                         )}
                     </section>
